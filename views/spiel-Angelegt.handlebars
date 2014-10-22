@@ -1,0 +1,30 @@
+    {{#if adminUrl}}
+    <a href="{{adminUrl}}">aktualisieren</a>
+    {{else}}
+    <a href="">aktualisieren</a>
+    {{/if}}
+
+    <ul>
+        <li>Spiel: {{spiel.id}}</li>
+        <li>letzter Zugriff: {{spiel.lastAccess}}</li>
+        <li>Status: {{spiel.status}}</li>
+        <li>angemeldete Spieler: {{spiel.spieler.length}}</li>
+    </ul>
+        {{#if admin}}
+        <a href="mailto:?subject=Einladung zum Iljig spielen&body=Link zum Mitspielen: {{teilnahmeUrl}}">Lade deine Freunde ein!</a>
+        {{/if}}
+
+        {{#if teilnehmer}}
+        <form id="teilnehmenForm" action="{{spiel.id}}/spieler/{{spieler.id}}" method="post">
+            <input type="hidden" name="teilnahmeGeheimnis" value="{{teilnahmeGeheimnis}}">
+            <label for="spielerName">Dein Name:</label><input type="text" id="spielerName" name="spielerName">
+            <button type="submit">Teilnehmen</button>
+        </form>
+        {{/if}}
+
+        {{#if admin}}
+        <form id="spielStartenForm" action="{{adminUrl}}" method="post">
+            <input type="hidden" name="status" value="Gestartet">
+            <button type="submit">Spiel starten</button>
+        </form>
+        {{/if}}

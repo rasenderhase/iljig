@@ -1,0 +1,12 @@
+{
+    "name": "iljig",
+    "description": "iljig cards game",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express" : "3.1.0",
+        "express3-handlebars" : "0.3.2",
+        "i18next" : "1.6.1",
+        "promise" : "6.0.0"
+    }
+}
