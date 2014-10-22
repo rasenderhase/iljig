@@ -14,7 +14,7 @@
  * spielerStich -- 1:n -- spielerStichkarten (von einem Spieler in einem Stich gespielte Karten)
  */
 
-var DbService, s, u, Promise;
+var DbService, s, k, u, Promise;
 s = require("./SpielIljig.js");
 k = require("./KartenspielIljig.js");
 Promise = require('promise');
@@ -54,7 +54,7 @@ DbService.prototype = Object.create(Object.prototype, {
     getSpiel : {
         value : function(/* String */ id) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var spiel, spielerList, i = null,
+                var spiel,
                     result = null;
                 try {
                     this.deleteAlteSpiele(s.SpielIljig.MAX_SPIEL_ALTER);
@@ -85,7 +85,6 @@ DbService.prototype = Object.create(Object.prototype, {
                 var i, list = [],
                     spiel,
                     spielerList,
-                    err = null,
                     result = null;
 
                 try {
@@ -112,7 +111,7 @@ DbService.prototype = Object.create(Object.prototype, {
     deleteAlteSpiele : {
         value : function(/* Date */ maxAlterMs) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var err = null, i = null, j= null, spiel, index,
+                var i = null, j= null, spiel, index,
                     minDate = Date.now() - maxAlterMs;
                 try {
                     for (i in this.db.spiel) {
@@ -126,7 +125,7 @@ DbService.prototype = Object.create(Object.prototype, {
                                     }
                                 }
 
-                                delete spiel;
+                                delete this.db.spiel[i];
                             }
                         }
                     }
@@ -140,7 +139,6 @@ DbService.prototype = Object.create(Object.prototype, {
     saveSpieler : {
         value : function(/* k.Spieler */ spieler) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var err = null;
                 try {
                     this.db.spieler[spieler.id] = spieler.toDb();
                     this.db.index.spielSpieler[spieler.spielId][spieler.id] = spieler.id;
@@ -154,7 +152,6 @@ DbService.prototype = Object.create(Object.prototype, {
         value : function(/* String */ id) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
                 var spieler,
-                    err = null,
                     result = null;
                 try {
                     if (this.db.spieler[id]) {
@@ -176,7 +173,6 @@ DbService.prototype = Object.create(Object.prototype, {
                     spieler,
                     spielIndex,
                     spielerId,
-                    err = null,
                     result = null;
                 try {
                     spielIndex = this.db.index.spielSpieler[spielId];
@@ -198,10 +194,10 @@ DbService.prototype = Object.create(Object.prototype, {
     saveSpielerKarten : {
         value : function (/* Spieler */ spieler) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var err = null, i, karte;
+                var i = 0, karte;
                 try {
                     this.db.spielerKarten[spieler.id] = [];
-                    for (i in spieler.hand) {
+                    for (i = 0; i < spieler.hand.length; i++) {
                         karte = spieler.hand[i];
                         this.db.spielerKarten[spieler.id].push(karte.toDb());
                     }
@@ -214,13 +210,12 @@ DbService.prototype = Object.create(Object.prototype, {
     getSpielerKarten : {
         value : function(/* Spieler */ spieler) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var karten, karte, i,
-                    err = null,
+                var karten, karte, i = 0,
                     result = null;
                 try {
                     karten = this.db.spielerKarten[spieler.id];
                     if (karten) {
-                        for (i in karten) {
+                        for (i = 0; i < karten.length; i++) {
                             karte = new k.Karte();
                             karte.extend(karten[i]);
                             spieler.addHandKarte(karte);
