@@ -67,7 +67,7 @@ DbService.prototype = Object.create(Object.prototype, {
                             this.db.spiel[id].lastAccess = Date.now();
                             spiel.extend(this.db.spiel[id]);                //Persistierte Daten überbraten
 
-                            spiel.spieler = results;
+                            spiel.spieler = results.spielerList;
                             result = spiel;
                         }
 
@@ -85,6 +85,7 @@ DbService.prototype = Object.create(Object.prototype, {
                 var i, list = [],
                     spiel,
                     spielerList,
+                    spielerPromises = [],
                     result = null;
 
                 try {
@@ -92,17 +93,28 @@ DbService.prototype = Object.create(Object.prototype, {
 
                     for (i in this.db.spiel) {
                         if (this.db.spiel.hasOwnProperty(i)) {
-                            spiel = new s.SpielIljig();
-                            spiel.extend(this.db.spiel[i]);
-
-                            spielerList = this.getSpielerBySpiel(spiel.id);
-                            spiel.spieler = spielerList;
-                            list.push(spiel);
+                            spielerPromises.push(this.getSpielerBySpiel(this.db.spiel[i].id));
                         }
                     }
-                    result = list;
-                    console.log("getSpielList -> resolve");
-                    resolve(result);
+
+                    Promise.all(spielerPromises).done(function (results) {
+                        var i, id, spielerList;
+
+                        for (i in results) {
+                            id = results[i].spielId;
+                            if (this.db.spiel[id]) {
+                                spiel = new s.SpielIljig();
+                                spiel.extend(this.db.spiel[id]);                //Persistierte Daten überbraten
+
+                                spiel.spieler = results[i].spielerList;
+                                list.push(spiel);
+                            }
+                        }
+                        result = list;
+                        console.log("getSpielList -> resolve");
+                        resolve(result);
+                    }.bind(this), u.err());
+
                 } catch (e) { reject(e); }
             }.bind(this));
         }
@@ -184,7 +196,10 @@ DbService.prototype = Object.create(Object.prototype, {
                             spielerList.sort(function (a, b) { return a.nummer - b.nummer});
                         }
                     }
-                    result = spielerList;
+                    result = {
+                        spielerList : spielerList,
+                        spielId : spielId
+                    };
                     console.log("getSpielerBySpiel -> resolve");
                     resolve(result);
                 } catch (e) { reject(e); }
@@ -213,12 +228,14 @@ DbService.prototype = Object.create(Object.prototype, {
                 var karten, karte, i = 0,
                     result = null;
                 try {
+                    if (spieler) {
                     karten = this.db.spielerKarten[spieler.id];
-                    if (karten) {
-                        for (i = 0; i < karten.length; i++) {
-                            karte = new k.Karte();
-                            karte.extend(karten[i]);
-                            spieler.addHandKarte(karte);
+                        if (karten) {
+                            for (i = 0; i < karten.length; i++) {
+                                karte = new k.Karte();
+                                karte.extend(karten[i]);
+                                spieler.addHandKarte(karte);
+                            }
                         }
                     }
                     result = spieler;

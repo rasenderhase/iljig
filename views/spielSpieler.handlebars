@@ -1,1 +1,9 @@
-Spiel aus Sicht von {{spieler.name}}
+Spiel aus Sicht von {{spieler.name}}<br>
+Trumpf: {{spiel.trumpf}}
+<form action="" method="post">
+    <ul>
+        {{#spieler.hand}}
+            <li><label><input id="{{stringify}}" type="checkbox" value="{{stringify}}">{{farbe}} {{wert}}</label></li>
+        {{/spieler.hand}}
+    </ul>
+</form>

@@ -29,6 +29,11 @@ Karte.prototype = Object.create(Object.prototype, {
                 wert : this.wert
             }
         }
+    },
+    stringify : {
+        value : function() {
+            return JSON.stringify(this.toDb(), 0, 4);
+        }
     }
 });
 

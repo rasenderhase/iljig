@@ -8,6 +8,7 @@
 
 var dbService = require("../iljig/DBService.js").dbService,
     Promise = require("promise"),
+    k = require("../iljig/KartenspielIljig.js"),
     u = require("../Util.js").Util;
 
 exports.load = function(req, res, next){
@@ -18,11 +19,14 @@ exports.load = function(req, res, next){
         dbService.getSpiel(spielId),
         dbService.getSpieler(spielerId)
     ]).done(function (results) {
-            req.atts = {
-                spiel : results[0],
-                spieler : results[1]
-            };
-            next();
+            var spieler = results[1];
+            dbService.getSpielerKarten(spieler).done(function (result) {
+                req.atts = {
+                    spiel : results[0],
+                    spieler : results[1]
+                };
+                next();
+            }, u.err(next));
         }, u.err(next));
 };
 
@@ -57,6 +61,7 @@ exports.save = function(req, res, next){
 exports.view = function(req, res){
     var spiel = req.atts.spiel,
         spieler = req.atts.spieler,
+        spielerKarten = req.atts.spielerKarten,
         renderOptions = {};
 
     renderOptions.spiel = spiel;

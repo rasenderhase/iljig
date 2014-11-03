@@ -84,6 +84,7 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 geber = new k.GeberIljig();
                 geber.gib(stapel, this.spieler);
                 handSorter = new k.HandSorterIljig(stapel.getTrumpf());
+                this.trumpf = stapel.getTrumpf();
 
                 for (i in this.spieler) {
                     einSpieler = this.spieler[i];

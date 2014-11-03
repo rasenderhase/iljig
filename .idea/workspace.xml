@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76c8f44c-4b03-45d2-a131-f8651c8ebb51" name="Default" comment="">
+    <list default="true" id="76c8f44c-4b03-45d2-a131-f8651c8ebb51" name="Default" comment="k">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/iljig/DBService.js" afterPath="$PROJECT_DIR$/modules/iljig/DBService.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/Kartenspiel.js" afterPath="$PROJECT_DIR$/modules/Kartenspiel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/iljig/SpielIljig.js" afterPath="$PROJECT_DIR$/modules/iljig/SpielIljig.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/spiel-Gestartet.handlebars" afterPath="$PROJECT_DIR$/views/spiel-Gestartet.handlebars" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/spielSpieler.handlebars" afterPath="$PROJECT_DIR$/views/spielSpieler.handlebars" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/resources/spieler.js" afterPath="$PROJECT_DIR$/modules/resources/spieler.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="iljig.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413402880338" ignored="false" />
+    <file path="/Dummy.txt" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415045252931" ignored="false" />
     <file path="/spiel.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413411163682" ignored="false" />
     <file path="/server.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1363642534135" ignored="false" />
     <file path="/spiel.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1362598128718" ignored="false" />
-    <file path="/SpielIljig.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1407964665787" ignored="false" />
-    <file path="/DBService.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413411383840" ignored="false" />
+    <file path="/SpielIljig.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415052493829" ignored="false" />
+    <file path="/DBService.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415051868072" ignored="false" />
     <file path="/spiel-Angelegt.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1363646067970" ignored="false" />
     <file path="/fragment.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413411346647" ignored="false" />
-    <file path="/spieler.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413411034043" ignored="false" />
-    <file path="/spielSpieler.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1362757240338" ignored="false" />
+    <file path="/spieler.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415049993137" ignored="false" />
+    <file path="/spielSpieler.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415052159705" ignored="false" />
     <file path="/laufendesSpiel.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1362757341097" ignored="false" />
-    <file path="/Kartenspiel.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1407965803639" ignored="false" />
+    <file path="/Kartenspiel.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415047110251" ignored="false" />
     <file path="/KartenspielIljig.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1407966134998" ignored="false" />
     <file path="/spiellist.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1363458653841" ignored="false" />
-    <file path="/spiel-Gestartet.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1363646984507" ignored="false" />
+    <file path="/spiel-Gestartet.handlebars" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1415052656191" ignored="false" />
     <file path="/package.json" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413400512540" ignored="false" />
     <file path="/localtest.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413409822745" ignored="false" />
     <file path="/Util.js" changelist="76c8f44c-4b03-45d2-a131-f8651c8ebb51" time="1413410907242" ignored="false" />
@@ -44,10 +50,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DBService.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DBService.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/iljig/DBService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="27" selection-start="1808" selection-end="1808" vertical-scroll-proportion="0.33333334">
+            <state line="110" column="29" selection-start="3988" selection-end="3988" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Kartenspiel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/Kartenspiel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="13" selection-start="691" selection-end="691" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -56,7 +71,7 @@
       <file leaf-file-name="SpielIljig.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/iljig/SpielIljig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="37" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.0">
+            <state line="86" column="49" selection-start="3368" selection-end="3368" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -65,7 +80,25 @@
       <file leaf-file-name="spieler.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/resources/spieler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="8" selection-start="1745" selection-end="1745" vertical-scroll-proportion="0.0">
+            <state line="54" column="35" selection-start="1790" selection-end="1790" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spielSpieler.handlebars" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/spielSpieler.handlebars">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="24" selection-start="65" selection-end="65" vertical-scroll-proportion="-0.5714286">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spiellist.handlebars" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/spiellist.handlebars">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="22" selection-start="8" selection-end="22" vertical-scroll-proportion="-0.0">
               <folding />
             </state>
           </provider>
@@ -74,7 +107,16 @@
       <file leaf-file-name="spiel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/resources/spiel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="37" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0">
+            <state line="123" column="17" selection-start="4270" selection-end="4270" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spiel-Gestartet.handlebars" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/spiel-Gestartet.handlebars">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="28" selection-start="205" selection-end="205" vertical-scroll-proportion="0.12972973">
               <folding />
             </state>
           </provider>
@@ -97,7 +139,7 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitLogSettings">
     <option name="myStructureFilterPaths" />
@@ -108,30 +150,30 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/views/spielSpieler.handlebars" />
         <option value="$PROJECT_DIR$/views/layouts/laufendesSpiel.handlebars" />
         <option value="$PROJECT_DIR$/views/layouts/main.handlebars" />
         <option value="$PROJECT_DIR$/views/spiellist.handlebars" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/views/spiel-Angelegt.handlebars" />
-        <option value="$PROJECT_DIR$/views/spiel-Gestartet.handlebars" />
-        <option value="$PROJECT_DIR$/modules/Kartenspiel.js" />
         <option value="$PROJECT_DIR$/modules/iljig/KartenspielIljig.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/localtest.js" />
         <option value="$PROJECT_DIR$/modules/Util.js" />
         <option value="$PROJECT_DIR$/modules/resources/spiel.js" />
+        <option value="$PROJECT_DIR$/modules/Kartenspiel.js" />
         <option value="$PROJECT_DIR$/modules/resources/spieler.js" />
         <option value="$PROJECT_DIR$/modules/iljig/DBService.js" />
+        <option value="$PROJECT_DIR$/views/spielSpieler.handlebars" />
         <option value="$PROJECT_DIR$/modules/iljig/SpielIljig.js" />
+        <option value="$PROJECT_DIR$/views/spiel-Gestartet.handlebars" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="225" />
-    <option name="y" value="22" />
+    <option name="y" value="23" />
     <option name="width" value="1455" />
-    <option name="height" value="1028" />
+    <option name="height" value="1027" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -324,7 +366,7 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="settings.nodejs" />
+    <property name="options.lastSelected" value="settings.xslt" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/WebStorm/iljig-node" />
@@ -543,7 +585,11 @@
       <created>1363647794822</created>
       <updated>1363647794822</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="k">
+      <created>1413992240822</created>
+      <updated>1413992240822</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -567,26 +613,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="225" y="22" width="1455" height="1028" extended-state="0" />
-    <editor active="true" />
+    <frame x="225" y="23" width="1455" height="1027" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22417583" sideWeight="0.43365923" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17946927" sideWeight="0.17032968" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17946927" sideWeight="0.42857143" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3934066" sideWeight="0.8449721" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31023103" sideWeight="0.43365923" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20879889" sideWeight="0.1969197" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20879889" sideWeight="0.4928493" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39273927" sideWeight="0.8449721" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17946927" sideWeight="0.5285714" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23186813" sideWeight="0.71298885" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32637364" sideWeight="0.4769553" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31023103" sideWeight="0.5663408" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2310231" sideWeight="0.71298885" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32599118" sideWeight="0.4769553" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32616082" sideWeight="0.48238057" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32599118" sideWeight="0.48184356" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -631,7 +677,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Spiel starten" />
+    <option name="LAST_COMMIT_MESSAGE" value="k" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -658,79 +704,27 @@
     <MESSAGE value="contextRoot" />
     <MESSAGE value="Spieler anlegen" />
     <MESSAGE value="Spiel starten" />
+    <MESSAGE value="k" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="129" />
+      <option name="time" value="139" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/modules/iljig/KartenspielIljig.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="24" selection-start="4684" selection-end="4684" vertical-scroll-proportion="3.7779434">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/Kartenspiel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="217" selection-end="242" vertical-scroll-proportion="0.22354695">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/promise/node_modules/asap/asap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="0" selection-start="574" selection-end="574" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="8" selection-start="1273" selection-end="1277" vertical-scroll-proportion="0.82251906">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/Util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="18" selection-start="515" selection-end="515" vertical-scroll-proportion="0.57251906">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/promise/lib/es6-extensions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="1515" selection-end="1515" vertical-scroll-proportion="1.8034351">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/resources/spiel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="37" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/express/lib/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="709" selection-end="709" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/promise/lib/done.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="18" selection-start="183" selection-end="183" vertical-scroll-proportion="0.20038168">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/promise/lib/core.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="10" selection-start="2331" selection-end="2335" vertical-scroll-proportion="2.6506023">
+        <state line="88" column="10" selection-start="2331" selection-end="2335" vertical-scroll-proportion="2.6506023" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/node_modules/npm/lib/dedupe.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="5" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.33204633" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/localtest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="4" selection-start="1152" selection-end="1152" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -742,37 +736,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/node_modules/npm/lib/dedupe.js">
+    <entry file="file://$PROJECT_DIR$/.idea/vcs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="5" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.33204633">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/ECMAScript.js2">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="29" selection-start="816" selection-end="816" vertical-scroll-proportion="0.30722892">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/localtest.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/promise/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="4" selection-start="1152" selection-end="1152" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/iljig/SpielIljig.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/promise/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="37" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/spielSpieler.handlebars">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="24" selection-start="65" selection-end="65" vertical-scroll-proportion="-0.5714286">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/resources/spieler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="8" selection-start="1745" selection-end="1745" vertical-scroll-proportion="0.0">
+        <state line="54" column="35" selection-start="1790" selection-end="1790" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/iljig/DBService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="27" selection-start="1808" selection-end="1808" vertical-scroll-proportion="0.33333334">
+        <state line="110" column="29" selection-start="3988" selection-end="3988" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/Kartenspiel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="13" selection-start="691" selection-end="691" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/iljig/SpielIljig.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="49" selection-start="3368" selection-end="3368" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/spiellist.handlebars">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="22" selection-start="8" selection-end="22" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/resources/spiel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="17" selection-start="4270" selection-end="4270" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/spiel-Gestartet.handlebars">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="28" selection-start="205" selection-end="205" vertical-scroll-proportion="0.12972973">
           <folding />
         </state>
       </provider>
