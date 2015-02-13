@@ -13,31 +13,37 @@ var k = require("./modules/iljig/KartenspielIljig.js"),
     d = require("./modules/iljig/DBService.js"),
     u = require("./modules/Util.js");
 
-var stapel = new k.StapelIljig();
-
-var andi = new k.Spieler("andi");
-var martin = new k.Spieler("martin");
-
 var spiel = new s.SpielIljig(u.Util.uuid());
-var dbService = d.dbService;
 
-new k.GeberIljig().gib(stapel, [ andi, martin ]);
+var andi = new k.Spieler(1, "andi", spiel.id);
+var martin = new k.Spieler(2, "martin", spiel.id);
 
-
-var handSorter = new k.HandSorterIljig(stapel.getTrumpf());
-andi.handSorter = handSorter;
-martin.handSorter = handSorter;
-
-andi.sortHand();
-martin.sortHand();
-
-console.log("" + stapel);
-console.log("" + andi);
-console.log("" + martin);
+spiel.addSpieler(andi);
+spiel.addSpieler(martin);
 
 console.dir(spiel);
 
+spiel.starten();
+
+
+console.log("" + andi);
+console.log("" + martin);
+
+console.dir(spiel, { depth : null });
+
+var dbService = d.dbService;
+
+dbService.saveSpiel(spiel);
+dbService.saveSpieler(andi).done(function(res, err) { if (err) console.log(err); });
+dbService.saveSpielerKarten(andi);
+dbService.saveSpieler(martin);
+dbService.saveSpielerKarten(martin);
+
 //Synchrone Abarbeitung. 1. saveSpiel, 2. getSpiel
 var z = dbService.saveSpiel(spiel).done(dbService.getSpiel(spiel.id).done(function (res) {
+    console.log("Result von getSpiel.done: ");
     console.dir(res);
+    console.log("Aktuelle DB: ");
+    console.dir(dbService, { depth : null });
 }));
+
