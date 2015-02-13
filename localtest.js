@@ -32,7 +32,7 @@ spiel.starten();
 logger.debug("" + andi);
 logger.debug("" + martin);
 
-logger.debug(spiel, { depth : null });
+logger.debug("Spiel: " + JSON.stringify(spiel));
 
 var dbService = d.dbService;
 
@@ -47,6 +47,6 @@ var z = dbService.saveSpiel(spiel).done(dbService.getSpiel(spiel.id).done(functi
     logger.debug("Result von getSpiel.done: ");
     logger.debug(res);
     logger.debug("Aktuelle DB: ");
-    logger.debug(dbService, { depth : null });
+    logger.debug(JSON.stringify(dbService, null, 4));
 }));
 
