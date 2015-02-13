@@ -14,11 +14,14 @@
  * spielerStich -- 1:n -- spielerStichkarten (von einem Spieler in einem Stich gespielte Karten)
  */
 
-var DbService, s, k, u, Promise;
-s = require("./SpielIljig.js");
-k = require("./KartenspielIljig.js");
-Promise = require('promise');
-u = require("../Util.js").Util;
+var DbService,
+    s = require("./SpielIljig.js"),
+    k = require("./KartenspielIljig.js"),
+    Promise = require('promise'),
+    u = require("../Util.js").Util,
+    log4js = require('log4js');
+
+var logger = log4js.getLogger("iljig.DbService");
 
 DbService = function() {
     this.db = {
@@ -44,7 +47,7 @@ DbService.prototype = Object.create(Object.prototype, {
                     if (!this.db.index.spielSpieler[spiel.id]) {
                         this.db.index.spielSpieler[spiel.id] = {};
                     }
-                    console.log("saveSpiel -> resolve");
+                    logger.debug("saveSpiel -> resolve");
                     resolve();
                 } catch (e) { reject(e); }
             }.bind(this));      //fn.bind(this) entspricht $.proxy(fn, this)
@@ -71,7 +74,7 @@ DbService.prototype = Object.create(Object.prototype, {
                             result = spiel;
                         }
 
-                        console.log("getSpiel -> resolve");
+                        logger.debug("getSpiel -> resolve");
                         resolve(result);
                     }.bind(this), u.err());
 
@@ -111,7 +114,7 @@ DbService.prototype = Object.create(Object.prototype, {
                             }
                         }
                         result = list;
-                        console.log("getSpielList -> resolve");
+                        logger.debug("getSpielList -> resolve");
                         resolve(result);
                     }.bind(this), u.err());
 
@@ -141,7 +144,7 @@ DbService.prototype = Object.create(Object.prototype, {
                             }
                         }
                     }
-                    console.log("deleteAlteSpiele -> resolve");
+                    logger.debug("deleteAlteSpiele -> resolve");
                     resolve();
                 } catch (e) { reject(e); }
             }.bind(this));
@@ -154,7 +157,7 @@ DbService.prototype = Object.create(Object.prototype, {
                 try {
                     this.db.spieler[spieler.id] = spieler.toDb();
                     this.db.index.spielSpieler[spieler.spielId][spieler.id] = spieler.id;
-                    console.log("saveSpieler -> resolve");
+                    logger.debug("saveSpieler -> resolve");
                     resolve();
                 } catch (e) { reject(e); }
                }.bind(this));
@@ -172,7 +175,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         result = spieler;
                     }
 
-                    console.log("getSpieler -> resolve");
+                    logger.debug("getSpieler -> resolve");
                     resolve(result);
                 } catch (e) { reject(e); }
             }.bind(this));
@@ -200,7 +203,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         spielerList : spielerList,
                         spielId : spielId
                     };
-                    console.log("getSpielerBySpiel -> resolve");
+                    logger.debug("getSpielerBySpiel -> resolve");
                     resolve(result);
                 } catch (e) { reject(e); }
             }.bind(this));
@@ -216,7 +219,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         karte = spieler.hand[i];
                         this.db.spielerKarten[spieler.id].push(karte.toDb());
                     }
-                    console.log("saveSpielerKarten -> resolve");
+                    logger.debug("saveSpielerKarten -> resolve");
                     resolve();
                 } catch (e) { reject(e); }
             }.bind(this));
@@ -239,7 +242,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         }
                     }
                     result = spieler;
-                    console.log("getSpielerKarten -> resolve");
+                    logger.debug("getSpielerKarten -> resolve");
                     resolve(result);
                 } catch (e) { reject(e); }
             }.bind(this));
