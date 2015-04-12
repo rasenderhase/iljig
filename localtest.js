@@ -12,7 +12,7 @@ var k = require("./modules/iljig/KartenspielIljig.js"),
     s = require("./modules/iljig/SpielIljig.js"),
     d = require("./modules/iljig/DBService.js"),
     u = require("./modules/Util.js"),
-    log4js = require('log4js');
+    log4js = require("log4js");
 
 var logger = log4js.getLogger("localtest");
 

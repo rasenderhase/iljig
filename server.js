@@ -13,7 +13,9 @@ var express = require("express"),
     u = require("./modules/Util.js"),
     spiel = require("./modules/resources/spiel.js"),
     spieler = require("./modules/resources/spieler.js"),
-    conextRoot = "/iljig";
+    log4js = require("log4js"),
+    conextRoot = "/iljig",
+    logger = log4js.getLogger("server");
 
     app = express();
 
@@ -28,13 +30,14 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 
-app.use(express.logger('dev'));
+//app.use(express.logger('dev'));
 app.use(i18n.handle);
 app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.favicon(__dirname + "/public/images/icon.png"));
 app.use(express.static(__dirname + "/public"));
+app.use(log4js.connectLogger(logger, { level: 'auto' }));
 
 i18n.registerAppHelper(app);    //Register AppHelper so you can use the translate function inside template
 

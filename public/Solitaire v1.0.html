@@ -1,0 +1,710 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+
+<!--
+
+  Se prohibe el uso total o parcial del contenido de este fichero con
+  fines comerciales o no comerciales sin autorización previa del autor.
+  
+  http://www.inmensia.com/juegos
+
+-->
+
+<head>
+<title>Solitaire v1.0</title>
+<meta name="keywords" content="free,games,cards,solitaire,juegos,cartas,javascript" />
+</head>
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #005F00;
+}
+
+a {
+  color: #FF6600;
+}
+
+.div-restart {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 560px;
+  text-align: center;
+}
+
+.div-board {
+  position: absolute;
+  left: 10px;
+  top: 40px;
+}
+
+.div-adsense {
+  position: absolute;
+  left: 10px;
+  top: 420px;
+  width: 560px;
+  text-align: center;
+}
+
+.bunch {
+  position: absolute;
+  overflow: hidden;
+  z-index: 0;
+  border: 1px dashed #7F7F7F;
+  color: #FFFFFF;
+  background: #005F00;
+}
+
+.card {
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid #000000;
+  color: #000000;
+  background: #FFFFFF;
+}
+
+.div-addfreestats {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  display: none; 
+}
+
+</style>
+
+<body>
+
+<div id="div-restart" class="div-restart">
+Press <a href="javascript: window.location.reload()">F5</a> to restart the game any time
+</div>
+<div id="div-board" class="div-board">
+</div>
+<div id="div-adsense" class="div-adsense">
+<script type="text/javascript"><!--
+google_ad_client = "pub-8877985832405486";
+google_alternate_color = "005F00";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+google_ad_channel ="9180670588";
+google_color_border = "005F00";
+google_color_bg = "005F00";
+google_color_link = "FF6600";
+google_color_url = "FFFFFF";
+google_color_text = "FFFFFF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+<div id="div-addfreestats" class="div-addfreestats">
+<!-- ADDFREESTATS.COM AUTOCODE V4.0 -->
+<script type="text/javascript">
+<!--
+var AFS_Account="00705080";
+var AFS_Tracker="auto";
+var AFS_Server="www7";
+var AFS_Page="DetectName";
+var AFS_Url="DetectUrl";
+// -->
+</script>
+<script type="text/javascript" src="http://www7.addfreestats.com/cgi-bin/afstrack.cgi?usr=00705080">
+</script>
+<noscript>
+<a href="http://www.addfreestats.com" >
+<img src="http://www7.addfreestats.com/cgi-bin/connect.cgi?usr=00705080Pauto" border=0 title="AddFreeStats.com Free Web Stats!"></a>
+</noscript>
+<!-- ENDADDFREESTATS.COM AUTOCODE V4.0  -->
+</div>
+<div style="display:none;">
+<SCRIPT type='text/javascript' language='JavaScript' src='http://xslt.alexa.com/site_stats/js/t/a?url=www.inmensia.com'></SCRIPT>
+</div>
+
+<script type="text/javascript">
+
+//
+// Game
+//
+function Game() {
+  this.board = new Board();
+
+  this.run = function() {
+    this.board.start();
+  }
+}
+
+//
+// Board
+//
+function Board() {
+  var self = this;
+  this.div = document.getElementById("div-board");
+
+  this.deck   = new Deck();
+  this.bunchs = new Array();
+  
+  this.drags = new Array();
+  this.dragX = 0;
+  this.dragY = 0;
+
+  this.start = function() {
+    self.createBunchs();
+    self.shuffle();
+    self.registerMouse();
+  }
+
+  this.createBunchs = function() {
+    self.createBunch("pile",  50, 100, 1);
+    self.createBunch("pile", 125, 100, 2);
+    self.createBunch("pile", 200, 100, 3);
+    self.createBunch("pile", 275, 100, 4);
+    self.createBunch("pile", 350, 100, 5);
+    self.createBunch("pile", 425, 100, 6);
+    self.createBunch("pile", 500, 100, 7);
+    self.createBunch("deck",   5,   0, 0, self.createBunch("pair", 80, 0, 2) );
+    self.createBunch("end",  275,   0, 0);
+    self.createBunch("end",  350,   0, 0);
+    self.createBunch("end",  425,   0, 0);
+    self.createBunch("end",  500,   0, 0);
+  }
+
+  this.createBunch = function(type, left, top, initial, pair) {
+    var div   = self.createBunchDiv(left, top);
+    var bunch = new Bunch(div, self, type, initial, pair);
+
+    self.bunchs.push(bunch)
+    self.div.appendChild(div)
+    
+    return(bunch);
+  }
+
+  this.createBunchDiv = function(left, top) {
+    var id     = "bunch" + String(self.bunchs.length);
+    var width  = self.deck.cardWidth;
+    var height = self.deck.cardHeight;
+    
+    return( createDiv(id, "bunch", left, top, width, height) );
+  }
+
+  this.shuffle = function() {
+    var index = 0;
+    for (var i = 0; i < self.deck.cardTotal; ++ i) {
+      self.createCard(self.bunchs[index], self.deck.throwCard() );
+      if ( self.bunchs[index].isInitialFull() )
+         ++ index;
+    }
+  }
+
+  this.createCard = function(bunch, id) {
+    var reverse = bunch.initialCardReverse();
+    var img     = self.createCardImg(bunch, id, reverse);
+    var card    = new Card(img, bunch, id, reverse);
+    
+    bunch.addCard(card);
+    self.div.appendChild(img);
+  }
+
+  this.createCardImg = function(bunch, id, reverse) {
+    var zIndex  = bunch.initialCardZIndex();
+    var left    = bunch.initialCardLeft();
+    var top     = bunch.initialCardTop();
+    var width   = self.deck.cardWidth;
+    var height  = self.deck.cardHeight;
+    var src     = self.deck.cardSrc(id, reverse);
+    
+    return( createImg("card" + String(id), "card", zIndex, left, top, width, height, src) );
+  }
+
+//
+// Mouse
+//
+  this.registerMouse = function() {
+    document.ondblclick  = self.onDblClick;
+    document.onmousedown = self.onMouseDown;
+    document.onmousemove = self.onMouseMove;
+    document.onmouseup   = self.onMouseUp;
+  }
+  
+  this.unregisterMouse = function() {
+    document.ondblclick  = null;
+    document.onmousedown = null;
+    document.onmousemove = null;
+    document.onmouseup   = null;
+  }
+  
+  this.onDblClick = function(e) {
+    var object = getMouseObject(e);
+    switch(object.className){
+      case "card" : object.card.onDblClick();  break;
+      case "bunch": object.bunch.onDblClick(); break;
+    }
+  }
+
+  this.onMouseDown = function(e) {
+    var object = getMouseObject(e);
+    if (object.className == "card") {
+      var card = object.card;
+      
+      self.drags = card.bunch.getDrags(card);
+      if (self.drags.length > 0) {
+        self.dragX = pxToNumber(self.drags[0].img.style.left) - getMouseX(e);
+        self.dragY = pxToNumber(self.drags[0].img.style.top)  - getMouseY(e);
+        
+        for (var i in self.drags) {
+          self.drags[i].originalLeft   = self.drags[i].img.style.left;
+          self.drags[i].originalTop    = self.drags[i].img.style.top;
+          self.drags[i].originalZIndex = self.drags[i].img.style.zIndex;
+          self.drags[i].img.style.zIndex = 1000 + i;
+        }
+
+        return(false);
+      }
+    }
+  }
+
+  this.onMouseMove = function(e) {
+    var left = self.dragX + getMouseX(e);
+    var top  = self.dragY + getMouseY(e);
+    
+    for (var i in self.drags) {
+      self.drags[i].img.style.left = String(left) + "px";
+      self.drags[i].img.style.top  = String(top + (10 * i) ) + "px";
+    }
+    
+    return(self.drags.length == 0);
+  }
+
+  this.onMouseUp = function(e) {
+    if (self.drags.length) {
+    
+      var left = self.dragX + getMouseX(e);
+      var top  = self.dragY + getMouseY(e);
+      
+      var bunch = self.getBunchDrop(left, top);
+      if (bunch)
+        for (var i in self.drags)
+          bunch.adquireCard(self.drags[i]);
+      else 
+        for (var i in self.drags){
+          self.drags[i].img.style.left   = self.drags[i].originalLeft;
+          self.drags[i].img.style.top    = self.drags[i].originalTop;
+          self.drags[i].img.style.zIndex = self.drags[i].originalZIndex;
+        }
+        
+      self.drags.length = 0;
+      self.checkEnd();
+    }
+  }
+
+  this.getBunchDrop = function(left, top) {
+    for (var i in self.bunchs) {
+      if ( self.collition(left, top, self.bunchs[i].div) )
+        if ( self.bunchs[i].acceptCards(self.drags) )
+          return(self.bunchs[i]);
+
+      for (var j in self.bunchs[i].cards)
+        if ( self.collition(left, top, self.bunchs[i].cards[j].img) )
+          if ( self.bunchs[i].acceptCards(self.drags) )
+            return(self.bunchs[i]);
+    }
+  }
+
+  this.collition = function(left, top, element) {
+    return( (left >= pxToNumber(element.style.left) ) &&
+            (left <  pxToNumber(element.style.left) + self.deck.cardWidth) &&
+            (top  >= pxToNumber(element.style.top) ) &&
+            (top  <  pxToNumber(element.style.top) + self.deck.cardHeight) );
+  }
+
+//
+// Game over rules
+//
+  this.tryEnd = function(card) {
+    for (var i in self.bunchs)
+      if ( self.bunchs[i].acceptEnd(card) ) {
+        self.bunchs[i].adquireCard(card);
+        break;
+      }
+
+    self.checkEnd();
+  }
+
+  this.checkEnd = function() {
+    var end = 0;
+    for (var i in self.bunchs)
+      if ( self.bunchs[i].isEnded() )
+        ++ end;
+
+    if (end == 4) {
+      self.unregisterMouse();
+      alert("Congratulations!!! You have solved the Solitarie.\r\nClose this message and press F5 to play a new game.");
+    }
+  }
+
+}
+
+//
+// Bunch
+//
+function Bunch(div, board, type, initial, pair) {
+  var self = this;
+
+  this.div     = div;
+  this.board   = board;
+  this.type    = type;
+  this.initial = initial;
+  this.pair    = pair;
+
+  this.cards = new Array();
+
+  this.div.bunch = self;
+
+//
+// Mouse
+//
+  this.onDblClick = function() {
+    if (self.type == "deck")
+      while(self.pair.cards.length != 0)
+        self.adquireCard( self.pair.onTop() );
+  }
+
+  this.onDblClickCard = function(card) {
+    if (self.type != "end")
+      if ( self.isOnTop(card) )
+        self.board.tryEnd(card);
+  }
+
+  this.onDblClickReverse = function(card) {
+    if (self.type == "deck")
+      self.onDblClickReverseDeck(card);
+    else {
+      if ( self.isOnTop(card) )
+        card.flip();
+    }
+  }
+  
+  this.onDblClickReverseDeck = function(card) {
+    if (self.pair.cards.length > 1)
+      self.pair.onTop().img.style.left = self.pair.div.style.left;
+    if (self.cards.length > 1)
+      self.pair.adquireCard( self.onTop() );
+    if (self.cards.length >= 1) {
+      self.pair.adquireCard( self.onTop() );
+      self.pair.onTop().img.style.left = String( pxToNumber(self.pair.div.style.left) + 10) + "px";
+    }
+  }
+
+//
+// Cards management
+//
+  this.addCard = function(card) {
+    self.cards.push(card);
+  }
+  
+  this.removeCard = function(card) {
+    var cards = new Array();
+    for(var i in self.cards)
+      if (card.id != self.cards[i].id)
+        cards.push(self.cards[i]);
+    self.cards = cards;
+  }
+
+  this.adquireCard = function(card) {
+    card.bunch.removeCard(card);
+    self.addCard(card);
+    card.moveTo(self);
+  }
+
+  this.onTop = function() {
+    return( self.cards[self.cards.length - 1] );
+  }
+
+  this.isOnTop = function(card) {
+    return( card.id == self.onTop().id );
+  }
+
+//
+// Drag
+//
+  this.getDrags = function(card) {
+    var drags = new Array();
+    if (!card.reverse)
+      switch(self.type) {
+        case "pair": drags = self.getDragsTop(card);  break;
+        case "pile": drags = self.getDragsPile(card); break;
+        case "end" : drags = self.getDragsTop(card);  break;
+      }
+    return(drags);
+  }
+
+  this.getDragsTop = function(card) {
+    drags = new Array();
+    if ( card.id == self.onTop().id )
+      drags.push(card);
+    return(drags);
+  }
+
+  this.getDragsPile = function(card) {
+    drags = new Array();
+    for (var i in self.cards)
+      if (self.cards[i].id == card.id) {
+        for (; i < self.cards.length; ++ i)
+          drags.push(self.cards[i]);
+        break;
+      }
+    return(drags);
+  }
+
+//
+// Accept card rules
+//
+  this.acceptCards = function(cards) {
+    if (self.type == "pile")
+      return( self.acceptCardPile(cards[0]) );
+      
+    if ( (self.type == "end") && (cards.length == 1) )
+      return( self.acceptCardEnd(cards[0]) );
+
+    return(false);
+  }
+
+  this.acceptCardPile = function(card) {
+    if (self.cards.length == 0)
+      return(card.number == 13);
+
+    if (self.onTop().reverse == false)
+      if (self.onTop().number == card.number + 1)
+        return(self.onTop().color != card.color);
+      
+    return(false);
+  }
+
+  this.acceptCardEnd = function(card) {
+    if (self.cards.length == 0)
+      return(card.number == 1);
+
+    if (self.cards.length == card.number - 1)
+      return(self.cards[0].suit == card.suit);
+
+    return(false);
+  }
+
+//
+// End rules
+//
+  this.acceptEnd = function(card) {
+    if (self.type != "end")
+      return(false);
+      
+    return( self.acceptCardEnd(card) );
+  }
+
+  this.isEnded = function() {
+    if (self.type != "end")
+      return(false);
+      
+    return( self.cards.length == self.board.deck.cardSuit );
+  }
+
+//
+// Initial rules
+//
+  this.initialCardLeft = function() {
+    var left = pxToNumber(self.div.style.left);
+    
+    return(left + ( (self.type == "pair")? (10 * self.cards.length): 0) );
+  }
+
+  this.initialCardTop = function() {
+    var top = pxToNumber(self.div.style.top);
+
+    return(top + ( (self.type == "pile")? (10 * self.cards.length): 0) );
+  }
+
+  this.initialCardZIndex = function() {
+    return(self.cards.length);
+  }
+
+  this.initialCardReverse = function() {
+    switch(self.type) {
+      case "deck": return(true);
+      case "pair": return(false);
+      case "pile": return(self.cards.length != self.initial - 1);
+    }
+  }
+  
+  this.isInitialFull = function() {
+    return(self.cards.length == self.initial);
+  }
+
+//
+// Non initial rules
+//
+  this.cardLeft = function() {
+    return( pxToNumber(self.div.style.left) );
+  }
+
+  this.cardTop = function() {
+    var top = pxToNumber(self.div.style.top);
+
+    return(top + ( (self.type == "pile")? (10 * ( self.cards.length - 1) ): 0) );
+  }
+  
+  this.cardZIndex = function() {
+    return(self.cards.length);
+  }
+
+  this.cardReverse = function() {
+    switch(self.type) {
+      case "deck": return(true);
+      case "pair": return(false);
+      case "pile": return(false);
+      case "end" : return(false);
+    }
+  }
+}
+
+//
+// Card
+//
+function Card(img, bunch, id, reverse) {
+  var self = this;
+  
+  this.img     = img;
+  this.bunch   = bunch;
+  this.id      = id;
+  this.reverse = reverse;
+
+  this.suit    = Math.floor(id / self.bunch.board.deck.cardSuit);
+  this.number  = Math.floor(id % self.bunch.board.deck.cardSuit) + 1;
+  this.color   = Math.floor(id / self.bunch.board.deck.cardSuit) % 2;
+
+  this.img.card = self;
+  
+  this.onDblClick = function() {
+    self.reverse? self.bunch.onDblClickReverse(self): self.bunch.onDblClickCard(self);
+  }
+  
+  this.flip = function() {
+    self.reverse = !self.reverse;
+    self.img.src = self.bunch.board.deck.cardSrc(self.id, self.reverse);
+  }
+
+  this.moveTo = function(bunch) {
+    self.bunch = bunch;
+
+    self.img.style.zIndex = self.bunch.cardZIndex();
+    self.img.style.left   = String( self.bunch.cardLeft() ) + "px";
+    self.img.style.top    = String( self.bunch.cardTop() ) + "px";
+    self.reverse          = self.bunch.cardReverse();
+    self.img.src          = self.bunch.board.deck.cardSrc(self.id, self.reverse);
+  }
+}
+
+//
+// Deck
+//
+function Deck() {
+  this.cardWidth     = 55;
+  this.cardHeight    = 80;
+  this.cardSuit      = 13;
+  this.cardTotal     = 52;
+  this.cardURL       = "pictures/juegos/solitaire/";
+  this.cardReverse   = "reverse";
+  this.cardName      = "card";
+  this.cardExtension = ".png";
+
+  this.throwed = new Array( this.cardTotal );
+
+  this.throwCard = function() {
+    var id = Math.floor( Math.random() * this.throwed.length );
+
+    while(this.throwed[id])
+      if (++ id == this.throwed.length)
+        id = 0;
+    this.throwed[id] = true;
+
+    return(id)
+  }
+
+  this.cardSrc = function(id, reverse) {
+    var srcname = (reverse)? this.cardReverse: ( this.cardName + String(id) );
+
+    return( this.cardURL + srcname + this.cardExtension );
+  }
+}
+
+//
+// Utils
+//
+function createDiv(id, className, left, top, width, height) {
+  var div = document.createElement("div");
+    
+  div.id           = id;
+  div.className    = className;
+  div.style.left   = String(left)   + "px";
+  div.style.top    = String(top)    + "px";
+  div.style.width  = String(width)  + "px";
+  div.style.height = String(height) + "px";
+  
+  return(div);
+}
+
+function createImg(id, className, zIndex, left, top, width, height, src) {
+  var img = document.createElement("img");
+    
+  img.id           = id;
+  img.className    = className;
+  img.style.zIndex = zIndex;
+  img.style.left   = String(left)   + "px";
+  img.style.top    = String(top)    + "px";
+  img.style.width  = String(width)  + "px";
+  img.style.height = String(height) + "px";
+  img.src          = src;
+  
+  return(img);
+}
+
+function getMouseObject(e) {
+  return(e? e.target: window.event.srcElement);
+}
+
+function getMouseX(e) {
+  return(e? e.clientX: window.event.clientX);
+}
+  
+function getMouseY(e) {
+  return(e? e.clientY: window.event.clientY);
+}
+
+function pxToNumber(s) {
+  return( Number( s.substring(0, s.length - 2) ) );
+}
+
+//
+// Instance and start Game
+//
+var game = new Game;
+game.run();
+
+</script>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-276332-1";
+urchinTracker();
+</script>
+</body>
+
+</html>

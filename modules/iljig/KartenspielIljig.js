@@ -66,6 +66,14 @@ StapelIljig.prototype = Object.create(k.Stapel.prototype, {
         value : function () {
             return "StapelIljig[Trumpf:" + this.trumpf + ", Karten=[" + this.karten + "]]";
         }
+    },
+    toDb : {
+        value : function() {
+            var i, karte;
+            for (i = 0; i < this.karten[i]; i++) {
+
+            }
+        }
     }
 });
 

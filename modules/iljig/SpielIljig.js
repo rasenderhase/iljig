@@ -82,8 +82,8 @@ SpielIljig.prototype = Object.create(Object.prototype, {
             } else if (this.status === s.SpielIljig.STATUS.angelegt) {
                 geber = new k.GeberIljig();
                 geber.gib(this.stapel, this.spieler);
-                handSorter = new k.HandSorterIljig(this.stapel.getTrumpf());
                 this.trumpf = this.stapel.getTrumpf();
+                handSorter = new k.HandSorterIljig(this.trumpf);
 
                 for (i in this.spieler) {
                     einSpieler = this.spieler[i];
@@ -94,6 +94,7 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 console.log("" + this.stapel);
 
                 this.status = s.SpielIljig.STATUS.gestartet;
+                this.spielerNummerAnDerReihe = Math.floor(Math.random() * this.spieler.length);
             }
         }
     },
