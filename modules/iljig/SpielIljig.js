@@ -66,8 +66,8 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                     message : "Es sind höchstens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.maxAnzahl + " Spieler erlaubt."
                 }
             }
-            this.spieler.push(spieler);
             spieler.nummer = this.spieler.length;
+            this.spieler.push(spieler);
         }
     },
     starten : {
@@ -80,6 +80,7 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                     message : "Es müssen mindestens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.minAnzahl + " Spieler mitspielen."
                 }
             } else if (this.status === s.SpielIljig.STATUS.angelegt) {
+                this.status = s.SpielIljig.STATUS.gestartet;
                 geber = new k.GeberIljig();
                 geber.gib(this.stapel, this.spieler);
                 this.trumpf = this.stapel.getTrumpf();
@@ -93,8 +94,8 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 }
                 console.log("" + this.stapel);
 
-                this.status = s.SpielIljig.STATUS.gestartet;
                 this.spielerNummerAnDerReihe = Math.floor(Math.random() * this.spieler.length);
+                this.status = s.SpielIljig.STATUS.zug;
             }
         }
     },

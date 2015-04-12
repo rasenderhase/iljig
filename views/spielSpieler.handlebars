@@ -6,4 +6,7 @@ Trumpf: {{spiel.trumpf}}
             <li><label><input id="{{stringify}}" type="checkbox" value="{{stringify}}">{{farbe}} {{wert}}</label></li>
         {{/spieler.hand}}
     </ul>
+{{#if spielerAnDerReihe}}
+    <button type="submit">Spielen</button>
+{{/if}}
 </form>

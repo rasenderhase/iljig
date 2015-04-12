@@ -81,9 +81,14 @@ exports.view = function(req, res){
         adminGeheimnis = req.param("adminGeheimnis") || req.cookies.adminGeheimnis,
         renderOptions = {}, baseUrl;
 
+    if (spiel === null) {
+        next("Spiel ist null");
+    }
+
     renderOptions.spiel = spiel;
     renderOptions.teilnahmeUrl = req.atts.teilnahmeUrl;
     renderOptions.adminGeheimnis = req.atts.adminGeheimnis;
+    renderOptions.spielerAnDerReihe = spiel.spieler[spiel.spielerNummerAnDerReihe];
     if (spiel.teilnahmeGeheimnis === teilnahmeGeheimnis) {
         renderOptions.teilnehmer = true;
         renderOptions.teilnahmeGeheimnis = teilnahmeGeheimnis;

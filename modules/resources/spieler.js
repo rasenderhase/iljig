@@ -61,11 +61,13 @@ exports.save = function(req, res, next){
 exports.view = function(req, res){
     var spiel = req.atts.spiel,
         spieler = req.atts.spieler,
-        spielerKarten = req.atts.spielerKarten,
         renderOptions = {};
 
     renderOptions.spiel = spiel;
     renderOptions.spieler = spieler;
+    renderOptions.spielerAnDerReihe =
+        spiel.status == s.SpielIljig.STATUS.zug
+        && spiel.spielerNummerAnDerReihe == spieler.nummer;
     renderOptions.layout = "spielSpieler";
 
     res.render("spielSpieler", renderOptions);
