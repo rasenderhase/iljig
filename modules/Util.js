@@ -21,7 +21,7 @@ Util.prototype = Object.create(Object.prototype, {
         value : function (next) {
             return function (err) {
                 if (next) {
-                    next(err);
+                    return next(err);
                 }
                 if (err) {
                     throw err;
