@@ -1,6 +1,10 @@
 Kartenspiel
 ===
 
+[![Code Climate](https://img.shields.io/codeclimate/github/rasenderhase/iljig.svg)](https://codeclimate.com/github/rasenderhase/iljig)
+
+[![Issue Count](https://codeclimate.com/github/rasenderhase/iljig/badges/issue_count.svg)](https://codeclimate.com/github/rasenderhase/iljig)
+
 ### Rollen:
        * Admin
        * Teilnehmer
