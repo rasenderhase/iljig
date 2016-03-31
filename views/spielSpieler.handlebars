@@ -3,7 +3,7 @@ Trumpf: {{spiel.trumpf}}
 <form action="" method="post">
     <ul>
         {{#spieler.hand}}
-            <li><label><input id="{{stringify}}" type="checkbox" value="{{stringify}}">{{farbe}} {{wert}}</label></li>
+            <li><label><input name="karte" id="{{stringify}}" type="checkbox" value="{{stringify}}">{{farbe}} {{wert}}</label></li>
         {{/spieler.hand}}
     </ul>
 {{#if spielerAnDerReihe}}

@@ -20,7 +20,7 @@ exports.load = function(req, res, next){
         dbService.getSpieler(spielerId)
     ]).done(function (results) {
             var spieler = results[1];
-            dbService.getSpielerKarten(spieler).done(function (result) {
+            dbService.getSpielerKarten(spieler).done(function (/* result */) {
                 req.atts = {
                     spiel : results[0],
                     spieler : results[1]
@@ -44,17 +44,20 @@ exports.save = function(req, res, next){
         next();
     };
 
-    if (teilnahmeGeheimnis !== spiel.teilnahmeGeheimnis
-        && adminGeheimnis !== spiel.adminGeheimnis) {
-        //Wenn weder teilnahmeGeheimnis noch adminGeheimnis stimmen,
-        //muss es sich um einen Hacker handlen
-        next("Hacker!");
-    } else if (!spieler) {
-        spieler = new k.Spieler(id, spielerName, spiel.id);
-        spiel.addSpieler(spieler);                              //TODO ???
-        req.atts.spieler = spieler;
-        res.status(201);
-        dbService.saveSpieler(spieler).done(callback, u.err(next));
+    if (!spieler) {
+        //Spieler hinzufügen : adminGeheimnis oder teilnahmeGeheimnis muss vorhanden sein
+        if (teilnahmeGeheimnis !== spiel.teilnahmeGeheimnis
+            && adminGeheimnis !== spiel.adminGeheimnis) {
+            //Wenn weder teilnahmeGeheimnis noch adminGeheimnis stimmen,
+            //muss es sich um einen Hacker handlen
+            next("Hacker!");
+        } else {
+            spieler = new k.Spieler(id, spielerName, spiel.id);
+            spiel.addSpieler(spieler);                              //TODO ???
+            req.atts.spieler = spieler;
+            res.status(201);
+            dbService.saveSpieler(spieler).done(callback, u.err(next));
+        }
     } else callback();
 };
 
