@@ -23,6 +23,6 @@
     "should": "^8.3.1"
   },
   "scripts": {
-    "test": "grunt travisci"
+    "test": "grunt travisci --verbose"
   }
 }
