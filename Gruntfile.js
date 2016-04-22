@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         },
         mocha_istanbul: {
             target: {
-                src: 'test',
+                src: 'test/**/*.js',
                 options: {
                     coverageFolder: 'coverage',
                     coverage: true,
