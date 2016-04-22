@@ -23,6 +23,6 @@
     "should": "^8.3.1"
   },
   "scripts": {
-    "test": "grunt mocha_istanbul codacy"
+    "test": "grunt travisci"
   }
 }
