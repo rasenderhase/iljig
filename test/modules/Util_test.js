@@ -13,7 +13,16 @@ describe('Util', function() {
     describe('#err()', function () {
         it('should return a function', function() {
             var result =  u.Util.err();
-            should(result).not.be.null();
+            should(result).be.type('function');
+        });
+    });
+
+    describe('#err()', function () {
+        it('result called with parameter should throw an exception', function() {
+            var result =  u.Util.err();
+            (function() {
+                result(new Error());
+            }).should.throw();
         });
     });
 });
