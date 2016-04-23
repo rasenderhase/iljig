@@ -129,25 +129,14 @@ DbService.prototype = Object.create(Object.prototype, {
     deleteAlteSpiele : {
         value : function(/* Date */ maxAlterMs) {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var i = null, j= null, spiel, index,
-                    minDate = Date.now() - maxAlterMs;
+                var i = null, minDate = Date.now() - maxAlterMs;
                 try {
                     for (i in this.db.spiel) {
-                        if (!this.db.spiel.hasOwnProperty(i)) {
+                        if (!this.db.spiel.hasOwnProperty(i)
+                            || this.db.spiel[i].lastAccess >= minDate) {
                             continue;
                         }
-                        if (this.db.spiel[i].lastAccess >= minDate) {
-                            //Haltbarkeitsdatum des Spiels ist noch nicht abgelaufen
-                            continue;
-                        }
-                        spiel = this.db.spiel[i];
-                        index = this.db.index.spielSpieler[spiel.id];
-                        for (j in index) {
-                            if (index.hasOwnProperty(j)) {
-                                delete this.db.spieler[j];
-                            }
-                        }
-
+                        this.deleteSpielSpieler(this.db.spiel[i]);
                         delete this.db.spiel[i];
                     }
                     logger.debug("deleteAlteSpiele -> resolve");
@@ -156,6 +145,18 @@ DbService.prototype = Object.create(Object.prototype, {
             }.bind(this));
         }
     },
+    deleteSpielSpieler : {
+        value: function (spiel) {
+            var index, j;
+            index = this.db.index.spielSpieler[spiel.id];
+            for (j in index) {
+                if (index.hasOwnProperty(j)) {
+                    delete this.db.spieler[j];
+                }
+            }
+        }
+    },
+    
 
     saveSpieler : {
         value : function(/* k.Spieler */ spieler) {
