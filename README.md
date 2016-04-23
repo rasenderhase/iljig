@@ -3,8 +3,8 @@ Kartenspiel
 
 [![Build Status](https://img.shields.io/travis/rasenderhase/iljig.svg)](https://travis-ci.org/rasenderhase/iljig)
 [![Code Climate](https://img.shields.io/codeclimate/github/rasenderhase/iljig.svg)](https://codeclimate.com/github/rasenderhase/iljig)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/f8332f4f1c6d4bbfaa563920ff5324e8)](https://www.codacy.com/app/andreas-knees/iljig)
-[![Codacy Badge](https://api.codacy.com/project/badge/coverage/f8332f4f1c6d4bbfaa563920ff5324e8)](https://www.codacy.com/app/andreas-knees/iljig)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/b0f1bbb63acc4672a2870e203df4c232)](https://www.codacy.com/app/andreas-knees/iljig)
+[![Codacy Badge](https://api.codacy.com/project/badge/coverage/b0f1bbb63acc4672a2870e203df4c232)](https://www.codacy.com/app/andreas-knees/iljig)
 [![Issue Count](https://codeclimate.com/github/rasenderhase/iljig/badges/issue_count.svg)](https://codeclimate.com/github/rasenderhase/iljig/issues)
 
 ### Rollen:

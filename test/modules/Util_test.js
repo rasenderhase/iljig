@@ -9,4 +9,11 @@ describe('Util', function() {
             u.Util.uuid().should.be.a.String();
         });
     });
+
+    describe('#err()', function () {
+        it('should return a function', function() {
+            var result =  u.Util.err();
+            should(result).not.be.null();
+        });
+    });
 });
