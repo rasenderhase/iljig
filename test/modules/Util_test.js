@@ -25,4 +25,15 @@ describe('Util', function() {
             }).should.throw();
         });
     });
+
+    describe('#err()', function () {
+        it('called with parameter should execute parameter', function() {
+            var result, parameter, err = new Error(), f = function (p) {
+                parameter = p;
+            };
+            result = u.Util.err(f);
+            result(err);
+            parameter.should.equal(err);
+        });
+    });
 });
