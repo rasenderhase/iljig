@@ -136,17 +136,19 @@ DbService.prototype = Object.create(Object.prototype, {
                         if (!this.db.spiel.hasOwnProperty(i)) {
                             continue;
                         }
-                        if (this.db.spiel[i].lastAccess < minDate) {
-                            spiel = this.db.spiel[i];
-                            index = this.db.index.spielSpieler[spiel.id];
-                            for (j in index) {
-                                if (index.hasOwnProperty(j)) {
-                                    delete this.db.spieler[j];
-                                }
-                            }
-
-                            delete this.db.spiel[i];
+                        if (this.db.spiel[i].lastAccess >= minDate) {
+                            //Haltbarkeitsdatum des Spiels ist noch nicht abgelaufen
+                            continue;
                         }
+                        spiel = this.db.spiel[i];
+                        index = this.db.index.spielSpieler[spiel.id];
+                        for (j in index) {
+                            if (index.hasOwnProperty(j)) {
+                                delete this.db.spieler[j];
+                            }
+                        }
+
+                        delete this.db.spiel[i];
                     }
                     logger.debug("deleteAlteSpiele -> resolve");
                     resolve();
