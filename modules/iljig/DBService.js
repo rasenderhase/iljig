@@ -203,7 +203,7 @@ DbService.prototype = Object.create(Object.prototype, {
                             spieler = new k.Spieler();
                             u.extend(spieler, this.db.spieler[spielerId]);
                             spielerList.push(spieler);
-                            spielerList.sort(function (a, b) { return a.nummer - b.nummer});
+                            spielerList.sort(function (a, b) { return a.nummer - b.nummer; });
                         }
                     }
                     result = {
