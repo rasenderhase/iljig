@@ -28,7 +28,7 @@ describe('Util', function() {
 
     describe('#err()', function () {
         it('called with parameter should execute parameter', function() {
-            var result, parameter, err = new Error(), f = function (p) {
+            var result, parameter = null, err = new Error(), f = function (p) {
                 parameter = p;
             };
             result = u.Util.err(f);
