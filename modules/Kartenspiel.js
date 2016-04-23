@@ -43,14 +43,19 @@ Kartenspiel = function() {
 
 Kartenspiel.prototype = Object.create(Object.prototype, {
     name : {
-        value : "Kartenpiel"
+        value : "Kartenspiel"
+    },
+    kartenMap : {
+        value : {}
+    },
+    karten : {
+        value : []
     },
     addKarte : {
         value : function (farbe, wert) {
             var karte = new Karte(farbe, wert),
                 addKarteToMap = function (key, key2, karte) {
                 var map;
-                if (!this.kartenMap) this.kartenMap = {};
                 map = this.kartenMap[key];
 
                 if (!map) {
@@ -60,13 +65,10 @@ Kartenspiel.prototype = Object.create(Object.prototype, {
                 map[key2] = karte;
             };
 
-            if (!this.karten) {
-                this.karten = [];
-            }
             this.karten.push(karte);
 
-            addKarteToMap(farbe, wert, karte);
-            addKarteToMap(wert, farbe, karte);
+            addKarteToMap.call(this, farbe, wert, karte);
+            addKarteToMap.call(this, wert, farbe, karte);
         }
     },
     getKarte : {

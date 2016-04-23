@@ -1,4 +1,4 @@
-var should, k;
+var should, r;
 should = require("should");
 
 r = require("../../../modules/resources/spieler.js");

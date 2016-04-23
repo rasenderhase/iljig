@@ -1,7 +1,7 @@
-var should, k;
+var should, s;
 should = require("should");
 
-k = require("../../../modules/iljig/SpielIljig.js");
+s = require("../../../modules/iljig/SpielIljig.js");
 
 describe("SpielIljig", function() {
     describe("#addSpieler", function() {
