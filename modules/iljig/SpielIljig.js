@@ -87,6 +87,9 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 handSorter = new k.HandSorterIljig(this.trumpf);
 
                 for (i in this.spieler) {
+                    if (!this.spieler.hasOwnProperty(i)) {
+                        continue;
+                    }
                     einSpieler = this.spieler[i];
                     einSpieler.handSorter = handSorter;
                     einSpieler.sortHand();
