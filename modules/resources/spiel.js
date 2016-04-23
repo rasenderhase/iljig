@@ -8,7 +8,6 @@
 
 var dbService = require("../iljig/DBService.js").dbService,
     s = require("../iljig/SpielIljig.js"),
-    k = require("../iljig/KartenspielIljig.js"),
     u = require("../Util.js").Util,
     url = require("url"),
     Promise = require("promise");
@@ -30,7 +29,7 @@ exports.home = function(req, res) {
 };
 
 exports.load = function(req, res, next){
-    var id = req.param("spiel_id");
+    var id = req.param("spiel_id", null);
 
     dbService.getSpiel(id).done(function (spiel) {
         req.atts = {
@@ -41,8 +40,8 @@ exports.load = function(req, res, next){
 };
 
 exports.save = function(req, res, next){
-    var id = req.param("spiel_id"),
-        adminGeheimnis = req.param("adminGeheimnis"),
+    var id = req.param("spiel_id", null),
+        adminGeheimnis = req.param("adminGeheimnis", null),
         spiel = req.atts.spiel,
         status = spiel ? spiel.status : null,
         callback, i, promises = [];
@@ -65,6 +64,9 @@ exports.save = function(req, res, next){
                 spiel.starten();
                 promises.push(dbService.saveSpiel(spiel));
                 for (i in spiel.spieler) {
+                    if (!spiel.spieler.hasOwnProperty(i)) {
+                        continue;
+                    }
                     promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
                 }
                 Promise.all(promises).done(callback, u.err(next));
@@ -77,8 +79,8 @@ exports.save = function(req, res, next){
 
 exports.view = function(req, res){
     var spiel = req.atts.spiel,
-        teilnahmeGeheimnis = req.param("teilnahmeGeheimnis"),
-        adminGeheimnis = req.param("adminGeheimnis") || req.cookies.adminGeheimnis,
+        teilnahmeGeheimnis = req.param("teilnahmeGeheimnis", null),
+        adminGeheimnis = req.param("adminGeheimnis", null) || req.cookies.adminGeheimnis,
         renderOptions = {}, baseUrl;
 
     if (spiel === null) {

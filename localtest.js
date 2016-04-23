@@ -43,10 +43,9 @@ dbService.saveSpieler(martin);
 dbService.saveSpielerKarten(martin);
 
 //Synchrone Abarbeitung. 1. saveSpiel, 2. getSpiel
-var z = dbService.saveSpiel(spiel).done(dbService.getSpiel(spiel.id).done(function (res) {
+dbService.saveSpiel(spiel).done(dbService.getSpiel(spiel.id).done(function (res) {
     logger.debug("Result von getSpiel.done: ");
     logger.debug(res);
     logger.debug("Aktuelle DB: ");
     logger.debug(JSON.stringify(dbService, null, 4));
 }));
-

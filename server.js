@@ -10,7 +10,6 @@
 var express = require("express"),
     exphbs  = require("express3-handlebars"),
     i18n = require("i18next"),
-    u = require("./modules/Util.js"),
     spiel = require("./modules/resources/spiel.js"),
     spieler = require("./modules/resources/spieler.js"),
     log4js = require("log4js"),
@@ -21,10 +20,12 @@ var express = require("express"),
 
 i18n.init({supportedLngs: ['en', 'de']});
 
+//noinspection JSUnusedGlobalSymbols
 app.engine("handlebars", exphbs({
     defaultLayout: "main",
     helpers : {
         t : i18n.t,
+        //contextRoot helper allows the use of {{contextRoot}}/ in template (e.g. for URLs)
         contextRoot : function() { return conextRoot; }
     }
 }));

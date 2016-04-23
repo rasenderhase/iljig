@@ -68,7 +68,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         if (this.db.spiel[id]) {
                             spiel = new s.SpielIljig();
                             this.db.spiel[id].lastAccess = Date.now();
-                            spiel.extend(this.db.spiel[id]);                //Persistierte Daten überbraten
+                            u.extend(spiel, this.db.spiel[id]);                //Persistierte Daten überbraten
 
                             spiel.spieler = results.spielerList;
                             result = spiel;
@@ -87,7 +87,6 @@ DbService.prototype = Object.create(Object.prototype, {
             return new Promise(function (/* function */ resolve, /* function */ reject) {
                 var i, list = [],
                     spiel,
-                    spielerList,
                     spielerPromises = [],
                     result = null;
 
@@ -101,13 +100,17 @@ DbService.prototype = Object.create(Object.prototype, {
                     }
 
                     Promise.all(spielerPromises).done(function (results) {
-                        var i, id, spielerList;
+                        var i, id;
 
                         for (i in results) {
+                            if (!results.hasOwnProperty(i)) {
+                                continue;
+                            }
+
                             id = results[i].spielId;
                             if (this.db.spiel[id]) {
                                 spiel = new s.SpielIljig();
-                                spiel.extend(this.db.spiel[id]);                //Persistierte Daten überbraten
+                                u.extend(spiel, this.db.spiel[id]);                //Persistierte Daten überbraten
 
                                 spiel.spieler = results[i].spielerList;
                                 list.push(spiel);
@@ -130,18 +133,19 @@ DbService.prototype = Object.create(Object.prototype, {
                     minDate = Date.now() - maxAlterMs;
                 try {
                     for (i in this.db.spiel) {
-                        if (this.db.spiel.hasOwnProperty(i)) {
-                            if (this.db.spiel[i].lastAccess < minDate) {
-                                spiel = this.db.spiel[i];
-                                index = this.db.index.spielSpieler[spiel.id];
-                                for (j in index) {
-                                    if (index.hasOwnProperty(j)) {
-                                        delete this.db.spieler[j];
-                                    }
+                        if (!this.db.spiel.hasOwnProperty(i)) {
+                            continue;
+                        }
+                        if (this.db.spiel[i].lastAccess < minDate) {
+                            spiel = this.db.spiel[i];
+                            index = this.db.index.spielSpieler[spiel.id];
+                            for (j in index) {
+                                if (index.hasOwnProperty(j)) {
+                                    delete this.db.spieler[j];
                                 }
-
-                                delete this.db.spiel[i];
                             }
+
+                            delete this.db.spiel[i];
                         }
                     }
                     logger.debug("deleteAlteSpiele -> resolve");
@@ -171,7 +175,7 @@ DbService.prototype = Object.create(Object.prototype, {
                 try {
                     if (this.db.spieler[id]) {
                         spieler = new k.Spieler();
-                        spieler.extend(this.db.spieler[id]);
+                        u.extend(spieler, this.db.spieler[id]);
                         result = spieler;
                     }
 
@@ -194,7 +198,7 @@ DbService.prototype = Object.create(Object.prototype, {
                     for (spielerId in spielIndex) {
                         if (spielIndex.hasOwnProperty(spielerId)) {
                             spieler = new k.Spieler();
-                            spieler.extend(this.db.spieler[spielerId]);
+                            u.extend(spieler, this.db.spieler[spielerId]);
                             spielerList.push(spieler);
                             spielerList.sort(function (a, b) { return a.nummer - b.nummer});
                         }
@@ -236,7 +240,7 @@ DbService.prototype = Object.create(Object.prototype, {
                         if (karten) {
                             for (i = 0; i < karten.length; i++) {
                                 karte = new k.Karte();
-                                karte.extend(karten[i]);
+                                u.extend(karte, karten[i]);
                                 spieler.addHandKarte(karte);
                             }
                         }

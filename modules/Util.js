@@ -28,21 +28,19 @@ Util.prototype = Object.create(Object.prototype, {
                 }
             }
         }
-    }
-});
-
-Object.defineProperty(Object.prototype, "extend", {
-    enumerable: false,
-    value: function(from) {
-        var props = Object.getOwnPropertyNames(from);
-        var dest = this;
-        props.forEach(function(name) {
-            if (name in dest) {
-                var destination = Object.getOwnPropertyDescriptor(from, name);
-                Object.defineProperty(dest, name, destination);
-            }
-        });
-        return this;
+    }, 
+    extend : {
+        enumerable: false,
+        value: function(dest, from) {
+            var props = Object.getOwnPropertyNames(from);
+            props.forEach(function(name) {
+                if (name in dest) {
+                    var destination = Object.getOwnPropertyDescriptor(from, name);
+                    Object.defineProperty(dest, name, destination);
+                }
+            });
+            return dest;
+        }
     }
 });
 

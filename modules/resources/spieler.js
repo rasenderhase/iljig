@@ -12,8 +12,8 @@ var dbService = require("../iljig/DBService.js").dbService,
     u = require("../Util.js").Util;
 
 exports.load = function(req, res, next){
-    var spielerId = req.param("spieler_id"),
-        spielId = req.param("spiel_id");
+    var spielerId = req.param("spieler_id", null),
+        spielId = req.param("spiel_id", null);
 
     Promise.all([
         dbService.getSpiel(spielId),
@@ -31,10 +31,10 @@ exports.load = function(req, res, next){
 };
 
 exports.save = function(req, res, next){
-    var id = req.param("spieler_id"),
-        adminGeheimnis = req.param("adminGeheimnis"),
-        teilnahmeGeheimnis = req.param("teilnahmeGeheimnis"),
-        spielerName = req.param("spielerName"),
+    var id = req.param("spieler_id", null),
+        adminGeheimnis = req.param("adminGeheimnis", null),
+        teilnahmeGeheimnis = req.param("teilnahmeGeheimnis", null),
+        spielerName = req.param("spielerName", null),
         spieler = req.atts.spieler,
         spiel = req.atts.spiel,
         callback;
@@ -69,8 +69,8 @@ exports.view = function(req, res){
     renderOptions.spiel = spiel;
     renderOptions.spieler = spieler;
     renderOptions.spielerAnDerReihe =
-        spiel.status == s.SpielIljig.STATUS.zug
-        && spiel.spielerNummerAnDerReihe == spieler.nummer;
+        spiel.status === s.SpielIljig.STATUS.zug
+        && spiel.spielerNummerAnDerReihe === spieler.nummer;
     renderOptions.layout = "spielSpieler";
 
     res.render("spielSpieler", renderOptions);
