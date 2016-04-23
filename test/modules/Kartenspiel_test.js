@@ -25,7 +25,7 @@ describe("Karte", function() {
         it("should return a data object copy", function() {
             var dbo = karte.toDb();
             dbo.should.not.be.exactly(karte);
-            dbo.should.have.property("farbe", "grün")
+            dbo.should.have.property("farbe", "grün");
             dbo.should.have.property("wert", "350€");
         });
     });
@@ -56,11 +56,11 @@ describe("Kartenspiel", function() {
             kartenspiel.addKarte("grün", "350€");
             kartenspiel.addKarte("blau", "199$");
 
-            kartenspiel.karten[0].should.have.property("farbe", "grün");
-            kartenspiel.karten[0].should.have.property("wert", "350€");
+            kartenspiel.getKarten()[0].should.have.property("farbe", "grün");
+            kartenspiel.getKarten()[0].should.have.property("wert", "350€");
 
-            kartenspiel.karten[1].should.have.property("farbe", "blau");
-            kartenspiel.karten[1].should.have.property("wert", "199$");
+            kartenspiel.getKarten()[1].should.have.property("farbe", "blau");
+            kartenspiel.getKarten()[1].should.have.property("wert", "199$");
         });
     });
 });
