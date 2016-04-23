@@ -36,4 +36,15 @@ describe('Util', function() {
             parameter.should.equal(err);
         });
     });
+
+    describe('#extend()', function () {
+        it('should extend an object', function() {
+            var thing = { name : 'Heinz', age : 88 };
+            thing = thing.extend({ name : 'Helmut', size : 44});
+
+            thing.should.have.property('name', 'Helmut');
+            thing.should.have.property('age', 88);
+            thing.should.not.have.property('size', 44);
+        });
+    });
 });
