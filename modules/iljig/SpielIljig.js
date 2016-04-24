@@ -55,12 +55,10 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 throw {
                     name : "SpielLaeuftSchon",
                     message : "Es können keine weiteren Spieler mehr teilnehmen."
-                }
+                };
             }
 
-            if (this.spieler.length < k.GeberIljig.SPIELER_ANZAHL_KARTEN.maxAnzahl) {
-
-            } else {
+            if (this.spieler.length >= k.GeberIljig.SPIELER_ANZAHL_KARTEN.maxAnzahl) {
                 throw {
                     name : "ZuVieleSpieler",
                     message : "Es sind höchstens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.maxAnzahl + " Spieler erlaubt."
