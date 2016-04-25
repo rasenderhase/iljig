@@ -35,6 +35,11 @@ describe("Karte", function() {
                 .and.match(/{\s*"farbe"\s*:\s*"grün"\s*,\s*"wert"\s*:\s*"350€"\s*}/);
         });
     });
+    describe("#stringify", function() {
+        it("should return a JSON string", function() {
+            JSON.parse(karte.stringify()).should.have.property("farbe", "grün");
+        });
+    });
 });
 
 describe("Kartenspiel", function() {
@@ -61,6 +66,35 @@ describe("Kartenspiel", function() {
 
             kartenspiel.getKarten()[1].should.have.property("farbe", "blau");
             kartenspiel.getKarten()[1].should.have.property("wert", "199$");
+        });
+    });
+});
+
+describe("Spieler", function() {
+    var spieler;
+    beforeEach(function () {
+        spieler = new k.Spieler(1, "Andi", 4711);
+    });
+
+    describe("#constructor", function() {
+        it("should have name Kartenspiel", function() {
+            spieler.should.have.property("id", 1);
+            spieler.should.have.property("name", "Andi");
+            spieler.should.have.property("spielId", 4711);
+            spieler.should.have.property("nummer", null);
+            spieler.should.have.property("hand", []);
+        });
+    });
+
+    describe("#constructor with default id", function() {
+        it("should have name Kartenspiel", function() {
+            spieler = new k.Spieler(null, "Andi", 4711);
+
+            spieler.id.should.not.be.null();
+            spieler.should.have.property("name", "Andi");
+            spieler.should.have.property("spielId", 4711);
+            spieler.should.have.property("nummer", null);
+            spieler.should.have.property("hand", []);
         });
     });
 });
