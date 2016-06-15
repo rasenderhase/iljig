@@ -17,7 +17,7 @@
 var DbService,
     s = require("./SpielIljig.js"),
     k = require("./KartenspielIljig.js"),
-    Promise = require('promise'),
+    Promise = require("promise"),
     u = require("../Util.js").Util,
     log4js = require('log4js');
 
