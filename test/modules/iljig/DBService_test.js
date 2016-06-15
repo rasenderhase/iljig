@@ -1,7 +1,7 @@
 var should, log4js, logger, db, s;
 
 should = require("should");
-log4js = require('log4js');
+log4js = require("log4js");
 logger = log4js.getLogger("iljig.DbService_test");
 
 db = require("../../../modules/iljig/DBService.js");
