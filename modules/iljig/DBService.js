@@ -19,7 +19,7 @@ var DbService,
     k = require("./KartenspielIljig.js"),
     Promise = require("promise"),
     u = require("../Util.js").Util,
-    log4js = require('log4js');
+    log4js = require("log4js");
 
 var logger = log4js.getLogger("iljig.DbService");
 
