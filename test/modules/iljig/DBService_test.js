@@ -39,7 +39,7 @@ describe("DBService", function() {
                 }
             });
 
-            // Property löschen, da unterschiedlich
+            // Property für Vergleich löschen, da unterschiedlich
             delete spiel.lastAccess;
             // bei Promises muss das Assertion-Objekt zurückgegeben werden
             // https://shouldjs.github.io/#assertion-finally
