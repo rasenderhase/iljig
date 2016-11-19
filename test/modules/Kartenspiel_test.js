@@ -1,6 +1,7 @@
-var should, k;
+var should, log4js, logger, k;
 should = require("should");
-
+log4js = require("log4js");
+logger = log4js.getLogger("iljig.Kartenspiel_test");
 k = require("../../modules/Kartenspiel.js");
 
 describe("Karte", function() {
@@ -45,6 +46,7 @@ describe("Karte", function() {
 describe("Kartenspiel", function() {
     var kartenspiel;
     beforeEach(function() {
+        logger.debug("Kartenspiel-beforeEach: instanziere Kartenspiel");
         kartenspiel = new k.Kartenspiel();
     });
 

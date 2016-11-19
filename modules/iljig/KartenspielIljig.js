@@ -10,6 +10,7 @@ var k = require("./../Kartenspiel.js"),
     KartenspielIljig, StapelIljig, GeberIljig, HandSorterIljig;
 
 KartenspielIljig = function() {
+    k.Kartenspiel.call(this); // call super constructor.
     this.init();
 };
 KartenspielIljig.prototype = Object.create(k.Kartenspiel.prototype, {
@@ -81,6 +82,7 @@ StapelIljig.prototype = Object.create(k.Stapel.prototype, {
 });
 
 GeberIljig = function () {
+    //no super class
 };
 
 GeberIljig.SPIELER_ANZAHL_KARTEN = {

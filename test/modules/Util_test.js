@@ -1,24 +1,24 @@
 var should, u;
-should = require('should');
+should = require("should");
 
 u = require("../../modules/Util.js");
 
-describe('Util', function() {
-    describe('#uuid()', function () {
-        it('should return a string', function() {
+describe("Util", function() {
+    describe("#uuid()", function () {
+        it("should return a string", function() {
             u.Util.uuid().should.be.a.String();
         });
     });
 
-    describe('#err()', function () {
-        it('should return a function', function() {
+    describe("#err()", function () {
+        it("should return a function", function() {
             var result =  u.Util.err();
-            should(result).be.type('function');
+            should(result).be.type("function");
         });
     });
 
-    describe('#err()', function () {
-        it('result called with parameter should throw an exception', function() {
+    describe("#err()", function () {
+        it("result called with parameter should throw an exception", function() {
             var result =  u.Util.err();
             (function() {
                 result(new Error());
@@ -26,8 +26,8 @@ describe('Util', function() {
         });
     });
 
-    describe('#err()', function () {
-        it('called with parameter should execute parameter', function() {
+    describe("#err()", function () {
+        it("called with parameter should execute parameter", function() {
             var result, parameter = null, err = new Error(), f = function (p) {
                 parameter = p;
             };
@@ -37,14 +37,14 @@ describe('Util', function() {
         });
     });
     
-    describe('#extend()', function () {
-        it('should extend an object', function() {
-            var thing = { name : 'Heinz', age : 88 };
-            thing = u.Util.extend(thing, { name : 'Helmut', size : 44});
+    describe("#extend()", function () {
+        it("should extend an object", function() {
+            var thing = { name : "Heinz", age : 88 };
+            thing = u.Util.extend(thing, { name : "Helmut", size : 44});
 
-            thing.should.have.property('name', 'Helmut');
-            thing.should.have.property('age', 88);
-            thing.should.not.have.property('size', 44);
+            thing.should.have.property("name", "Helmut");
+            thing.should.have.property("age", 88);
+            thing.should.not.have.property("size", 44);
         });
     });
 });

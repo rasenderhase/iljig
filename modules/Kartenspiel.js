@@ -39,18 +39,12 @@ Karte.prototype = Object.create(Object.prototype, {
 
 
 Kartenspiel = function() {
+    this.name = "Kartenspiel";
+    this.kartenMap = {};
+    this.karten = [];
 };
 
 Kartenspiel.prototype = Object.create(Object.prototype, {
-    name : {
-        value : "Kartenspiel"
-    },
-    kartenMap : {
-        value : {}
-    },
-    karten : {
-        value : []
-    },
     addKarte : {
         value : function (farbe, wert) {
             var karte = new Karte(farbe, wert),
