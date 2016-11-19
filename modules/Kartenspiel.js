@@ -27,7 +27,7 @@ Karte.prototype = Object.create(Object.prototype, {
             return {
                 farbe : this.farbe,
                 wert : this.wert
-            }
+            };
         }
     },
     stringify : {
@@ -108,7 +108,9 @@ Spieler.prototype = Object.create(Object.prototype, {
     },
     addHandKarte : {
         value : function (/* Karte */ karte) {
-            if (!this.hand) this.hand = [];
+            if (!this.hand) {
+                this.hand = [];
+            }
             this.hand.push(karte);
         }
     },
