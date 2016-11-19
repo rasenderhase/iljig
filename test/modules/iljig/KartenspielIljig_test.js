@@ -66,7 +66,7 @@ describe("GeberIljig", function() {
                 this.karten.push(k);
             };
         };
-    })
+    });
 
     beforeEach(function () {
         stapelMock = new Mock();

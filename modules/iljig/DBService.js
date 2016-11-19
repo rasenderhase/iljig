@@ -128,17 +128,22 @@ DbService.prototype = Object.create(Object.prototype, {
 
     deleteAlteSpiele : {
         value : function(/* Date */ maxAlterMs) {
-            return new Promise(function (/* function */ resolve, /* function */ reject) {
-                var i = null, minDate = Date.now() - maxAlterMs;
-                try {
-                    for (i in this.db.spiel) {
-                        if (!this.db.spiel.hasOwnProperty(i)
-                            || this.db.spiel[i].lastAccess >= minDate) {
-                            continue;
-                        }
-                        this.deleteSpielSpieler(this.db.spiel[i]);
-                        delete this.db.spiel[i];
+            function deleteSpieleByMinDate(minDate) {
+                var i = null;
+                for (i in this.db.spiel) {
+                    if (!this.db.spiel.hasOwnProperty(i)
+                        || this.db.spiel[i].lastAccess >= minDate) {
+                        continue;
                     }
+                    this.deleteSpielSpieler(this.db.spiel[i]);
+                    delete this.db.spiel[i];
+                }
+            }
+
+            return new Promise(function (/* function */ resolve, /* function */ reject) {
+                var minDate = Date.now() - maxAlterMs;
+                try {
+                    deleteSpieleByMinDate.call(this, minDate);
                     logger.debug("deleteAlteSpiele -> resolve");
                     resolve();
                 } catch (e) { reject(e); }

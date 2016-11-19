@@ -70,7 +70,7 @@ SpielIljig.prototype = Object.create(Object.prototype, {
     },
     starten : {
         value : function () {
-            var stapel, geber, handSorter, einSpieler, i;
+            var geber, handSorter, einSpieler, i;
 
             if (this.spieler.length < k.GeberIljig.SPIELER_ANZAHL_KARTEN.minAnzahl) {
                 throw {
