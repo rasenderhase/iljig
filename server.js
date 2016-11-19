@@ -18,7 +18,7 @@ var express = require("express"),
 
     app = express();
 
-i18n.init({supportedLngs: ['en', 'de']});
+i18n.init({supportedLngs: ["en", "de"]});
 
 //noinspection JSUnusedGlobalSymbols
 app.engine("handlebars", exphbs({
@@ -54,7 +54,7 @@ app.all(conextRoot + "/spiel/:spiel_id/spieler/:spieler_id", spieler.load);
 app.post(conextRoot + "/spiel/:spiel_id/spieler/:spieler_id", spieler.save);
 app.all(conextRoot + "/spiel/:spiel_id/spieler/:spieler_id", spieler.view);
 
-app.get(conextRoot, function (req, res) { res.redirect(conextRoot + "/") });
+app.get(conextRoot, function (req, res) { res.redirect(conextRoot + "/"); });
 
 app.listen(3000);
 console.log("Listening on port 3000");

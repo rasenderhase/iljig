@@ -21,7 +21,7 @@
  */
 
 
-var SpielIljig, k, u;
+var SpielIljig, k, u, s;
 u = require("../Util.js").Util;
 k = require("./KartenspielIljig.js");
 s = require("./SpielIljig.js");

@@ -70,7 +70,9 @@ exports.save = function(req, res, next){
                     promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
                 }
                 Promise.all(promises).done(callback, u.err(next));
-            } else next();
+            } else {
+                next();
+            }
             break;
         default:
             next();
@@ -127,7 +129,7 @@ exports.list = function(req, res) {
                         status : spielList[i].status,
                         trumpf : spielList[i].trumpf,
                         spielerNummerAnDerReihe : spielList[i].spielerNummerAnDerReihe
-                    }
+                    };
                 }
                 res.json(json);
             }, u.err());

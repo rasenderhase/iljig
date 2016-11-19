@@ -130,7 +130,7 @@ Spieler.prototype = Object.create(Object.prototype, {
                 name : this.name,
                 spielId : this.spielId,
                 nummer : this.nummer
-            }
+            };
         }
     }
 });
