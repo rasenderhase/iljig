@@ -1,5 +1,5 @@
-var should, r;
-should = require("should");
+var r;
+require("should");
 
 r = require("../../../modules/resources/spiel.js");
 

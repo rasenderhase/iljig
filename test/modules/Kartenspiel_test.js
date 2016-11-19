@@ -1,5 +1,5 @@
-var should, log4js, logger, k;
-should = require("should");
+var log4js, logger, k;
+require("should");
 log4js = require("log4js");
 logger = log4js.getLogger("iljig.Kartenspiel_test");
 k = require("../../modules/Kartenspiel.js");

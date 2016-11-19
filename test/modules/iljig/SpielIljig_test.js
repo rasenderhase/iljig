@@ -1,5 +1,5 @@
-var should, s;
-should = require("should");
+var s;
+require("should");
 
 s = require("../../../modules/iljig/SpielIljig.js");
 
