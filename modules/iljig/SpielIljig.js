@@ -21,10 +21,13 @@
  */
 
 
-var SpielIljig, k, u, s;
+var SpielIljig, k, u, s, log4js, logger;
 u = require("../Util.js").Util;
 k = require("./KartenspielIljig.js");
 s = require("./SpielIljig.js");
+log4js = require("log4js");
+logger = log4js.getLogger("iljig.SpielIljig");
+
 
 SpielIljig = function (id, adminGeheimnis) {
     this.id = id || u.uuid();
@@ -62,38 +65,46 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 throw {
                     name : "ZuVieleSpieler",
                     message : "Es sind höchstens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.maxAnzahl + " Spieler erlaubt."
-                }
+                };
             }
             spieler.nummer = this.spieler.length;
             this.spieler.push(spieler);
         }
     },
+    /**
+     * Injiziert den Handsorter und
+     * sortiert die Handkarten aller Spieler
+     */
+    sortSpielerHand: function () {
+        var i, einSpieler,
+            handSorter = new k.HandSorterIljig(this.trumpf);
+            for (i in this.spieler) {
+            if (!this.spieler.hasOwnProperty(i)) {
+                continue;
+            }
+            einSpieler = this.spieler[i];
+            einSpieler.handSorter = handSorter;
+            einSpieler.sortHand();
+            logger.debug("" + einSpieler);
+        }
+    },
     starten : {
         value : function () {
-            var geber, handSorter, einSpieler, i;
+            var geber;
 
             if (this.spieler.length < k.GeberIljig.SPIELER_ANZAHL_KARTEN.minAnzahl) {
                 throw {
                     name : "ZuWenigeSpieler",
                     message : "Es müssen mindestens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.minAnzahl + " Spieler mitspielen."
-                }
+                };
             } else if (this.status === s.SpielIljig.STATUS.angelegt) {
                 this.status = s.SpielIljig.STATUS.gestartet;
                 geber = new k.GeberIljig();
                 geber.gib(this.stapel, this.spieler);
                 this.trumpf = this.stapel.getTrumpf();
-                handSorter = new k.HandSorterIljig(this.trumpf);
 
-                for (i in this.spieler) {
-                    if (!this.spieler.hasOwnProperty(i)) {
-                        continue;
-                    }
-                    einSpieler = this.spieler[i];
-                    einSpieler.handSorter = handSorter;
-                    einSpieler.sortHand();
-                    console.log("" + einSpieler);
-                }
-                console.log("" + this.stapel);
+                this.sortSpielerHand();
+                logger.debug("" + this.stapel);
 
                 this.spielerNummerAnDerReihe = Math.floor(Math.random() * this.spieler.length);
                 this.status = s.SpielIljig.STATUS.zug;
