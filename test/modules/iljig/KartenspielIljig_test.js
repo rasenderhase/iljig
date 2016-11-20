@@ -139,5 +139,9 @@ describe("HandSorterIljig", function () {
                    (handSorterIljig.sortFunction(test.args.karte1, test.args.karte2) > 0).should.be.equal(test.expected);
            });
        });
+
+       it("cards should be equal", function () {
+           handSorterIljig.sortFunction(new k.Karte("karo", "A"), new k.Karte("karo", "A")).should.be.equal(0, "difference of weights should be 0");
+       });
    });
 });
