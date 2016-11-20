@@ -121,7 +121,7 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 adminGeheimnis : this.adminGeheimnis,
                 spielerNummerAnDerReihe : this.spielerNummerAnDerReihe,
                 lastAccess : this.lastAccess
-            }
+            };
         }
     }
 });
