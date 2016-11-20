@@ -42,7 +42,7 @@ describe("SpielIljig", function() {
         it("should throw an exception because of wrong state", function() {
             spielIljig.status = "grumpf";
             (function () {
-                spielIljig.addSpieler(new k.Spieler(1010, "ands", 1))
+                spielIljig.addSpieler(new k.Spieler(1010, "ands", 1));
             }).should.throw({ name : "SpielLaeuftSchon" });
         });
     });
