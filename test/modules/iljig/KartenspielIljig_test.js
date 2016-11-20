@@ -94,3 +94,50 @@ describe("GeberIljig", function() {
         });
     });
 });
+
+describe("HandSorterIljig", function () {
+   var handSorterIljig, testsWeight, testsSort,
+       CARD1_GREATER = true, CARD2_GREATER = false;
+
+   testsWeight = [
+       { args : { karte: new k.Karte("herz", "7") }, expected : 1010 },
+       { args : { karte: new k.Karte("herz", "A") }, expected : 1100 },
+       { args : { karte: new k.Karte("karo", "7") }, expected : 11 },
+       { args : { karte: new k.Karte("karo", "K") }, expected : 71 },
+       { args : { karte: new k.Karte("pik", "A") }, expected : 103 },
+       { args : { karte: new k.Karte("J", "1") }, expected : 2002 },
+       { args : { karte: new k.Karte("J", "2") }, expected : 2001 },
+       { args : { karte: new k.Karte("J", "3") }, expected : 2000 }
+   ];
+
+   testsSort = [
+       { args : {karte1: new k.Karte("herz", "8"), karte2: new k.Karte("herz", "7")}, expected : CARD1_GREATER },
+       { args : {karte1: new k.Karte("J", "1"), karte2: new k.Karte("J", "2")}, expected : CARD1_GREATER },
+       { args : {karte1: new k.Karte("J", "3"), karte2: new k.Karte("herz", "A")}, expected : CARD1_GREATER },
+       { args : {karte1: new k.Karte("kreuz", "2"), karte2: new k.Karte("kreuz", "A")}, expected : CARD2_GREATER },
+       { args : {karte1: new k.Karte("kreuz", "3"), karte2: new k.Karte("kreuz", "2")}, expected : CARD2_GREATER },
+       { args : {karte1: new k.Karte("karo", "8"), karte2: new k.Karte("herz", "7")}, expected : CARD2_GREATER }
+   ];
+
+   beforeEach(function () {
+       handSorterIljig = new k.HandSorterIljig("herz");
+   });
+   describe("#calculateWeight", function() {
+       testsWeight.forEach(function(test) {
+          it("card " + test.args.karte.toString() + " should have weight " + test.expected, function () {
+              handSorterIljig.calculateWeight(test.args.karte).should.be.equal(test.expected);
+          });
+       });
+   });
+
+   describe("#sortFunction", function () {
+       testsSort.forEach(function(test) {
+           it("card " + test.args.karte1.toString() + " should be "
+                + (test.expected ? "greater" : "less")
+                + " than " + test.args.karte2.toString(),
+               function () {
+                   (handSorterIljig.sortFunction(test.args.karte1, test.args.karte2) > 0).should.be.equal(test.expected);
+           });
+       });
+   });
+});

@@ -130,39 +130,24 @@ GeberIljig.prototype = Object.create(Object.prototype, {
 });
 
 HandSorterIljig = function(trumpf) {
-    k.HandSorter.call(this, trumpf);
+    k.HandSorter.call(this);
+    this.trumpf = trumpf;
 };
 
 HandSorterIljig.prototype = Object.create(k.HandSorter.prototype, {
     calculateWeight : {
         value : function(/* Karte */ karte) {
-            var farbe = karte.farbe, weight = 0,
-                weightMap = {
-                    "7" : 10,
-                    "8" : 20,
-                    "9" : 30,
-                    "10" : 40,
-                    "B" : 50,
-                    "D" : 60,
-                    "K" : 70,
-                    "3" : 80,
-                    "2" : 90,
-                    "A" : 100,
-                    "karo" : 1,
-                    "herz" : 2,
-                    "pik" : 3,
-                    "kreuz" : 4
-                };
+            var farbe = karte.farbe, weight = 0;
 
             if (farbe === this.trumpf) {
                 weight = 1000;
-                weight = weight + weightMap[karte.wert];
+                weight = weight + this.weightMap[karte.wert];
             } else if (farbe === "J") {
                 weight = 2000;
                 weight = weight + 3 - parseInt(karte.wert, 10);
             } else {
-                weight = weightMap[farbe];
-                weight = weight + weightMap[karte.wert];
+                weight = this.weightMap[farbe];
+                weight = weight + this.weightMap[karte.wert];
             }
 
             return weight;
@@ -171,6 +156,24 @@ HandSorterIljig.prototype = Object.create(k.HandSorter.prototype, {
     sortFunction : {
         value : function (/* Karte */ a, /* Karte */ b) {
             return this.calculateWeight(a) - this.calculateWeight(b);
+        }
+    },
+    weightMap : {
+        value : {
+            "7": 10,
+            "8": 20,
+            "9": 30,
+            "10": 40,
+            "B": 50,
+            "D": 60,
+            "K": 70,
+            "3": 80,
+            "2": 90,
+            "A": 100,
+            "karo": 1,
+            "herz": 2,
+            "pik": 3,
+            "kreuz": 4
         }
     }
 });
