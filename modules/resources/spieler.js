@@ -8,6 +8,8 @@
 
 var dbService = require("../iljig/DBService.js").dbService,
     Promise = require("promise"),
+    log4js = require("log4js"),
+    logger = log4js.getLogger("resources.spieler");
     k = require("../iljig/KartenspielIljig.js"),
     u = require("../Util.js").Util,
     s = require("../iljig/SpielIljig.js");
@@ -36,6 +38,7 @@ exports.save = function(req, res, next){
         adminGeheimnis = req.param("adminGeheimnis", null),
         teilnahmeGeheimnis = req.param("teilnahmeGeheimnis", null),
         spielerName = req.param("spielerName", null),
+        karten = req.param("karte", null),
         spieler = req.atts.spieler,
         spiel = req.atts.spiel,
         callback;
@@ -45,7 +48,9 @@ exports.save = function(req, res, next){
         next();
     };
 
-    if (!spieler) {
+    if (!spiel) {
+        callback();
+    } else if (!spieler) {
         //Spieler hinzufügen : adminGeheimnis oder teilnahmeGeheimnis muss vorhanden sein
         if (teilnahmeGeheimnis !== spiel.teilnahmeGeheimnis
             && adminGeheimnis !== spiel.adminGeheimnis) {
@@ -59,7 +64,12 @@ exports.save = function(req, res, next){
             res.status(201);
             dbService.saveSpieler(spieler).done(callback, u.err(next));
         }
-    } else callback();
+    } else if (spieler.nummer === spiel.spielerNummerAnDerReihe) {
+        logger.debug("Gespielte Karten: " + karten);
+        callback();
+    } else {
+        callback();
+    }
 };
 
 exports.view = function(req, res){
@@ -70,7 +80,8 @@ exports.view = function(req, res){
     renderOptions.spiel = spiel;
     renderOptions.spieler = spieler;
     renderOptions.spielerAnDerReihe =
-        spiel.status === s.SpielIljig.STATUS.zug
+        spiel
+        && spiel.status === s.SpielIljig.STATUS.zug
         && spiel.spielerNummerAnDerReihe === spieler.nummer;
     renderOptions.layout = "spielSpieler";
 

@@ -79,7 +79,7 @@ exports.save = function(req, res, next){
     }
 };
 
-exports.view = function(req, res){
+exports.view = function(req, res, next){
     var spiel = req.atts.spiel,
         teilnahmeGeheimnis = req.param("teilnahmeGeheimnis", null),
         adminGeheimnis = req.param("adminGeheimnis", null) || req.cookies.adminGeheimnis,
