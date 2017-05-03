@@ -9,7 +9,8 @@
 var dbService = require("../iljig/DBService.js").dbService,
     Promise = require("promise"),
     k = require("../iljig/KartenspielIljig.js"),
-    u = require("../Util.js").Util;
+    u = require("../Util.js").Util,
+    s = require("../iljig/SpielIljig.js");
 
 exports.load = function(req, res, next){
     var spielerId = req.param("spieler_id", null),

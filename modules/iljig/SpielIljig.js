@@ -75,17 +75,19 @@ SpielIljig.prototype = Object.create(Object.prototype, {
      * Injiziert den Handsorter und
      * sortiert die Handkarten aller Spieler
      */
-    sortSpielerHand: function () {
-        var i, einSpieler,
-            handSorter = new k.HandSorterIljig(this.trumpf);
+    sortSpielerHand: {
+        value : function () {
+            var i, einSpieler,
+                handSorter = new k.HandSorterIljig(this.trumpf);
             for (i in this.spieler) {
-            if (!this.spieler.hasOwnProperty(i)) {
-                continue;
+                if (!this.spieler.hasOwnProperty(i)) {
+                    continue;
+                }
+                einSpieler = this.spieler[i];
+                einSpieler.handSorter = handSorter;
+                einSpieler.sortHand();
+                logger.debug("" + einSpieler);
             }
-            einSpieler = this.spieler[i];
-            einSpieler.handSorter = handSorter;
-            einSpieler.sortHand();
-            logger.debug("" + einSpieler);
         }
     },
     starten : {

@@ -46,4 +46,19 @@ describe("SpielIljig", function() {
             }).should.throw({ name : "SpielLaeuftSchon" });
         });
     });
+
+    describe("#starten", function() {
+        it("should throw an exception because too few players added", function() {
+            (function() {
+                spielIljig.starten();
+            }).should.throw({ name : "ZuWenigeSpieler" });
+        });
+
+        it("should start the game", function() {
+            spielIljig.addSpieler(new k.Spieler(1000, "andi", 1));
+            spielIljig.addSpieler(new k.Spieler(1001, "andj", 1));
+            spielIljig.starten();
+            spielIljig.should.have.property("status", s.SpielIljig.STATUS.zug);
+        });
+    });
 });
