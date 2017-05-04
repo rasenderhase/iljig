@@ -9,7 +9,7 @@
 var dbService = require("../iljig/DBService.js").dbService,
     Promise = require("promise"),
     log4js = require("log4js"),
-    logger = log4js.getLogger("resources.spieler");
+    logger = log4js.getLogger("resources.spieler"),
     k = require("../iljig/KartenspielIljig.js"),
     u = require("../Util.js").Util,
     s = require("../iljig/SpielIljig.js");
