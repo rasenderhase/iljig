@@ -1,5 +1,6 @@
 Kartenspiel
 ===
+[![Esel](https://github.com/rasenderhase/iljig/blob/master/public/images/icon.png?raw=true)](https://github.com/rasenderhase/iljig)
 
 [![Build Status](https://img.shields.io/travis/rasenderhase/iljig.svg)](https://travis-ci.org/rasenderhase/iljig)
 [![Code Climate](https://img.shields.io/codeclimate/github/rasenderhase/iljig.svg)](https://codeclimate.com/github/rasenderhase/iljig)
