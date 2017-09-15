@@ -8,7 +8,8 @@
     "express3-handlebars": "0.3.2",
     "i18next": "1.6.1",
     "log4js": "0.6.22",
-    "promise": "6.0.0"
+    "promise": "6.0.0",
+    "amdrequire": "0.x.x"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

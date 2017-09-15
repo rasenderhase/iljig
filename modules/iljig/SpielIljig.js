@@ -24,7 +24,6 @@
 var SpielIljig, k, u, s, log4js, logger;
 u = require("../Util.js").Util;
 k = require("./KartenspielIljig.js");
-s = require("./SpielIljig.js");
 log4js = require("log4js");
 logger = log4js.getLogger("iljig.SpielIljig");
 
@@ -99,8 +98,8 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                     name : "ZuWenigeSpieler",
                     message : "Es müssen mindestens " + k.GeberIljig.SPIELER_ANZAHL_KARTEN.minAnzahl + " Spieler mitspielen."
                 };
-            } else if (this.status === s.SpielIljig.STATUS.angelegt) {
-                this.status = s.SpielIljig.STATUS.gestartet;
+            } else if (this.status === SpielIljig.STATUS.angelegt) {
+                this.status = SpielIljig.STATUS.gestartet;
                 geber = new k.GeberIljig();
                 geber.gib(this.stapel, this.spieler);
                 this.trumpf = this.stapel.getTrumpf();
@@ -109,8 +108,28 @@ SpielIljig.prototype = Object.create(Object.prototype, {
                 logger.debug("" + this.stapel);
 
                 this.spielerNummerAnDerReihe = Math.floor(Math.random() * this.spieler.length);
-                this.status = s.SpielIljig.STATUS.zug;
+                this.status = SpielIljig.STATUS.zug;
             }
+        }
+    },
+    /**
+     * spieler: Der Spieler, der an der Reihe ist
+     * karten: Die Karten, die er gespielt hat. Wenn die karten leer sind,
+     * dann hat er gepasst. D.h., er muss alle Karten vom Tisch nehmen.
+     *
+     * Wenn der Spieler Karten gespielt hat:
+     * 1. Prüfen, ob er die Karten hat (Hacker-Abwehr)
+     * 2. Prüfen, ob es eine ungerade Anzahl ist
+     * 3. Prüfen, ob es sich um ein "Mas" handelt
+     * Prüfungen des Tischs:
+     * 1. Ist der Tisch leer?
+     * oder
+     * 1. Wurden gleich viel Karten gespielt, wie auf dem Tisch oben liegen?
+     * 2. Kann jede gespielte Karte eine oben liegende Karte übertrumpfen?
+     */
+    spielen : {
+        value : function (/* Spieler */ spieler, /* Karte[] */ karten) {
+
         }
     },
     toDb : {

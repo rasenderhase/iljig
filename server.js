@@ -7,11 +7,17 @@
  */
 
 
-var express = require("express"),
+var require = require('amdrequire');
+require.config({
+    basePath: __dirname + '',
+    publicPath: __dirname + '/public'
+});
+var
+    express = require("express"),
     exphbs  = require("express3-handlebars"),
     i18n = require("i18next"),
-    spiel = require("./modules/resources/spiel.js"),
-    spieler = require("./modules/resources/spieler.js"),
+    spiel = require(__dirname + "/modules/resources/spiel.js"),
+    spieler = require(__dirname + "/modules/resources/spieler.js"),
     log4js = require("log4js"),
     conextRoot = "/iljig",
     logger = log4js.getLogger("server");
@@ -37,7 +43,12 @@ app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.favicon(__dirname + "/public/images/icon.png"));
-app.use(express.static(__dirname + "/public"));
+app.use(conextRoot, express.static(__dirname + "/public"));
+app.use(conextRoot, express.static(__dirname + "/share"));
+
+app.use("apple-touch-icon-precomposed.png", express.static(__dirname + "/public/images/icon_100.png"));
+app.use("apple-touch-icon.png", express.static(__dirname + "/public/images/icon_100.png"));
+
 app.use(log4js.connectLogger(logger, { level: 'auto' }));
 
 i18n.registerAppHelper(app);    //Register AppHelper so you can use the translate function inside template
@@ -57,4 +68,4 @@ app.all(conextRoot + "/spiel/:spiel_id/spieler/:spieler_id", spieler.view);
 app.get(conextRoot, function (req, res) { res.redirect(conextRoot + "/"); });
 
 app.listen(3000);
-console.log("Listening on port 3000");
+logger.info("Listening on port 3000");

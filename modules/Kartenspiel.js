@@ -135,7 +135,10 @@ Spieler.prototype = Object.create(Object.prototype, {
     }
 });
 
-
+/**
+ * Der Stapel enthält die verdeckten Karten
+ * @constructor erzeugt einen neuen Stapel ohne Karten
+ */
 Stapel = function () {
     this.karten = [];
 };
@@ -152,7 +155,6 @@ Stapel.prototype = Object.create(Object.prototype, {
         }
     }
 });
-
 
 HandSorter = function() {
 };

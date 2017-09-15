@@ -7,7 +7,8 @@
  */
 
 var k = require("./../Kartenspiel.js"),
-    KartenspielIljig, StapelIljig, GeberIljig, HandSorterIljig;
+    thischValidator = require("../../share/iljig/tischValidator.js"),
+    KartenspielIljig, StapelIljig, GeberIljig, HandSorterIljig, TischIljig;
 
 KartenspielIljig = function() {
     k.Kartenspiel.call(this); // call super constructor.
@@ -178,9 +179,61 @@ HandSorterIljig.prototype = Object.create(k.HandSorter.prototype, {
     }
 });
 
+/**
+ * Der Tisch enthält die offenen Karten.
+ * @constructor erzeugt einen neuen Tisch ohne Karten
+ */
+TischIljig = function (/* String */ trumpf) {
+    this.offeneKarten = [];
+    this.trumpf = trumpf;
+};
+
+TischIljig.prototype = Object.create(Object.prototype, {
+    toString : {
+        value :function () {
+            return "TischIljig[" + this.offeneKarten + "]";
+        }
+    },
+    spieleKarten : {
+        value : function (/* Karte[] */ karten) {
+
+            thischValidator.validate(this.getObersteKarten(), karten, this.trumpf);
+
+            this.offeneKarten.unshift(karten);
+        }
+    },
+    beendeRunde : {
+        value : function () {
+            this.nimmAlleOffenenKarten();
+        }
+    },
+    nimmAlleOffenenKarten : {
+        value : function () {
+            var alleKarten = [];
+
+            this.offeneKarten.forEach(function () {
+                alleKarten = alleKarten.concat(this);
+            });
+
+            this.offeneKarten.length = 0;
+            return alleKarten;
+        }
+    },
+    getObersteKarten : {
+        value : function () {
+            var obersteKarten = null;
+            if (this.offeneKarten.length > 0) {
+                obersteKarten = this.offeneKarten[0];
+            }
+            return obersteKarten;
+        }
+    }
+});
+
 exports.KartenspielIljig = KartenspielIljig;
 exports.StapelIljig = StapelIljig;
 exports.GeberIljig = GeberIljig;
 exports.HandSorterIljig = HandSorterIljig;
+exports.TischIljig = TischIljig;
 exports.Spieler = k.Spieler;
 exports.Karte = k.Karte;
