@@ -1,5 +1,6 @@
 var log4js, logger, db, s;
 
+require("amd-loader");
 require("should");
 log4js = require("log4js");
 logger = log4js.getLogger("iljig.DbService_test");

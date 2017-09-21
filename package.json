@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "amd-loader": "0.0.8",
     "express": "3.1.0",
     "express3-handlebars": "0.3.2",
     "i18next": "1.6.1",
     "log4js": "0.6.22",
-    "promise": "6.0.0",
-    "amdrequire": "0.x.x"
+    "promise": "^6.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

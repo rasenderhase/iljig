@@ -7,11 +7,8 @@
  */
 
 
-var require = require('amdrequire');
-require.config({
-    basePath: __dirname + '',
-    publicPath: __dirname + '/public'
-});
+require("amd-loader");
+
 var
     express = require("express"),
     exphbs  = require("express3-handlebars"),
@@ -20,9 +17,10 @@ var
     spieler = require(__dirname + "/modules/resources/spieler.js"),
     log4js = require("log4js"),
     conextRoot = "/iljig",
-    logger = log4js.getLogger("server");
+    logger = log4js.getLogger("server"),
+    tv = require(__dirname + "/share/iljig/tischValidator.js");
 
-    app = express();
+app = express();
 
 i18n.init({supportedLngs: ["en", "de"]});
 
@@ -37,7 +35,7 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 
-//app.use(express.logger('dev'));
+//app.use(express.logger("dev"));
 app.use(i18n.handle);
 app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 app.use(express.cookieParser());
@@ -49,7 +47,7 @@ app.use(conextRoot, express.static(__dirname + "/share"));
 app.use("apple-touch-icon-precomposed.png", express.static(__dirname + "/public/images/icon_100.png"));
 app.use("apple-touch-icon.png", express.static(__dirname + "/public/images/icon_100.png"));
 
-app.use(log4js.connectLogger(logger, { level: 'auto' }));
+app.use(log4js.connectLogger(logger, { level: "auto" }));
 
 i18n.registerAppHelper(app);    //Register AppHelper so you can use the translate function inside template
 
@@ -67,5 +65,7 @@ app.all(conextRoot + "/spiel/:spiel_id/spieler/:spieler_id", spieler.view);
 
 app.get(conextRoot, function (req, res) { res.redirect(conextRoot + "/"); });
 
+logger.info(tv.test());
 app.listen(3000);
 logger.info("Listening on port 3000");
+
