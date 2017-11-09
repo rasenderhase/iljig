@@ -1,5 +1,7 @@
 Kartenspiel
 ===
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/rasenderhase/iljig.svg)](https://greenkeeper.io/)
 [![Esel](https://github.com/rasenderhase/iljig/blob/master/public/images/icon.png?raw=true)](https://github.com/rasenderhase/iljig)
 
 [![Build Status](https://img.shields.io/travis/rasenderhase/iljig.svg)](https://travis-ci.org/rasenderhase/iljig)
