@@ -5,10 +5,10 @@
   "private": true,
   "dependencies": {
     "amd-loader": "0.0.8",
-    "express": "4.16.2",
-    "express3-handlebars": "0.5.2",
-    "i18next": "10.0.7",
-    "log4js": "2.3.11",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "i18next": "^10.0.7",
+    "log4js": "^2.3.11",
     "promise": "^8.0.1"
   },
   "devDependencies": {

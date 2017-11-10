@@ -11,7 +11,7 @@ require("amd-loader");
 
 var
     express = require("express"),
-    exphbs  = require("express3-handlebars"),
+    exphbs  = require("express-handlebars"),
     i18n = require("i18next"),
     spiel = require(__dirname + "/modules/resources/spiel.js"),
     spieler = require(__dirname + "/modules/resources/spieler.js"),
