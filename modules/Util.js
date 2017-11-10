@@ -26,7 +26,7 @@ Util.prototype = Object.create(Object.prototype, {
                 if (err) {
                     throw err;
                 }
-            }
+            };
         }
     }, 
     extend : {
