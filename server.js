@@ -13,13 +13,13 @@ var
     express = require("express"),
     exphbs  = require("express-handlebars"),
     errorhandler = require("errorhandler"),
-    cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    favicon = require('serve-favicon'),
+    cookieParser = require("cookie-parser"),
+    bodyParser = require("body-parser"),
+    favicon = require("serve-favicon"),
     i18n = require("i18next"),
-    FilesystemBackend = require('i18next-node-fs-backend'),
-    sprintf = require('i18next-sprintf-postprocessor'),
-    i18nMiddleware = require('i18next-express-middleware'),
+    FilesystemBackend = require("i18next-node-fs-backend"),
+    sprintf = require("i18next-sprintf-postprocessor"),
+    i18nMiddleware = require("i18next-express-middleware"),
     spiel = require(__dirname + "/modules/resources/spiel.js"),
     spieler = require(__dirname + "/modules/resources/spieler.js"),
     log4js = require("log4js"),
@@ -39,12 +39,12 @@ i18n
         preload: ["en", "de"],
         detection: {
             // order and from where user language should be detected
-            order: [/*'path', 'session', 'querystring', 'cookie', */ 'header']
+            order: [/*"path", "session", "querystring", "cookie", */ "header"]
         },
         backend: {
-            loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
+            loadPath: __dirname + "/locales/{{lng}}/{{ns}}.json",
             // path to post missing resources
-            addPath: __dirname + '/locales/{{lng}}/{{ns}}.missing.json',
+            addPath: __dirname + "/locales/{{lng}}/{{ns}}.missing.json",
 
             // jsonIndent to use when storing json files
             jsonIndent: 2
