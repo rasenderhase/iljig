@@ -75,10 +75,20 @@ exports.save = function(req, res, next){
 exports.view = function(req, res){
     var spiel = req.atts.spiel,
         spieler = req.atts.spieler,
+        i = 0, einMitspieler = null,
         renderOptions = {};
 
     renderOptions.spiel = spiel;
     renderOptions.spieler = spieler;
+    renderOptions.mitspieler = [];
+    for (i = 0; i < spiel.spieler.length; i++) {
+        einMitspieler = spiel.spieler[i];
+
+        if (einMitspieler.nummer !== spieler.nummer) {
+            renderOptions.mitspieler.push(einMitspieler);
+        }
+    }
+
     renderOptions.spielerAnDerReihe =
         spiel
         && spiel.status === s.SpielIljig.STATUS.zug

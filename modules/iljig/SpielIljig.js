@@ -121,6 +121,10 @@ SpielIljig.prototype = Object.create(Object.prototype, {
      * 1. Prüfen, ob er die Karten hat (Hacker-Abwehr)
      * 2. Prüfen, ob es eine ungerade Anzahl ist
      * 3. Prüfen, ob es sich um ein "Mas" handelt
+     * 4. Prüfen, ob höchstens so viel Karten gespielt wurden, wie der Spieler mit den wenigsten Karten auf der Hand hat
+     * 5. Prüfen, ob höchstens GeberIljig.SPIELER_ANZAHL_KARTEN[spieler.length] - 2 Karten gespielt wurden (Stapel nicht leer)
+     * oder
+     * 5. Prüfen, ob höchstens GeberIljig.SPIELER_ANZAHL_KARTEN[alleSpieler.length] Karten gespielt wurden (Stapel leer)
      * Prüfungen des Tischs:
      * 1. Ist der Tisch leer?
      * oder

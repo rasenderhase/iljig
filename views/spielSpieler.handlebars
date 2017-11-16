@@ -1,5 +1,12 @@
 Spiel aus Sicht von {{spieler.name}}<br>
 Trumpf: {{spiel.trumpf}}
+
+{{#mitspieler}}
+<div>
+    Name: {{name}}<br>
+    Karten: {{hand.length}}
+</div>
+{{/mitspieler}}
 <form action="" method="post">
     <ul>
         {{#spieler.hand}}
