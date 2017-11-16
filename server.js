@@ -26,9 +26,9 @@ var
     conextRoot = "/iljig",
     logger = log4js.getLogger("server"),
     hbs, test,
-    tv = require(__dirname + "/share/iljig/tischValidator.js");
+    tv = require(__dirname + "/share/iljig/tischValidator.js"),
 
-app = express();
+    app = express();
 
 i18n
     .use(i18nMiddleware.LanguageDetector)
@@ -71,7 +71,8 @@ app.set("view engine", "handlebars");
 app.use(i18nMiddleware.handle(i18n));
 app.use(errorhandler({ showStack: true, dumpExceptions: true }));
 app.use(cookieParser());
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.json());
 app.use(favicon(__dirname + "/public/images/icon.png"));
 app.use(conextRoot, express.static(__dirname + "/public"));
 app.use(conextRoot, express.static(__dirname + "/share"));
