@@ -65,7 +65,7 @@ exports.save = function(req, res, next){
             }
             finalCallback = function () {
                 Promise.all(promises).done(callback, u.err(next));
-            }
+            };
         } else {
             finalCallback = next;
         }
