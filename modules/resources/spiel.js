@@ -44,12 +44,31 @@ exports.save = function(req, res, next){
         adminGeheimnis = req.param("adminGeheimnis", null),
         spiel = req.atts.spiel,
         status = spiel ? spiel.status : null,
-        callback, i, promises = [];
+        callback, saveLaufendesSpiel, i, promises = [];
 
     callback = function() {
         res.header("location", req.path);
         next();
     };
+
+    saveLaufendesSpiel = function() {
+        if (adminGeheimnis === spiel.adminGeheimnis
+            && req.body.status === s.SpielIljig.STATUS.gestartet) {
+            spiel.starten();
+            promises.push(dbService.saveSpiel(spiel));
+            for (i in spiel.spieler) {
+                if (!spiel.spieler.hasOwnProperty(i)) {
+                    continue;
+                }
+                promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
+            }
+            Promise.all(promises).done(callback, u.err(next));
+            return;
+        } else {
+            next();
+            return;
+        }
+    }
 
     switch (status) {
         case null:
@@ -59,22 +78,7 @@ exports.save = function(req, res, next){
             dbService.saveSpiel(spiel).done(callback, u.err(next));
             return;
         case s.SpielIljig.STATUS.angelegt:
-            if (adminGeheimnis === spiel.adminGeheimnis
-                && req.body.status === s.SpielIljig.STATUS.gestartet) {
-                spiel.starten();
-                promises.push(dbService.saveSpiel(spiel));
-                for (i in spiel.spieler) {
-                    if (!spiel.spieler.hasOwnProperty(i)) {
-                        continue;
-                    }
-                    promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
-                }
-                Promise.all(promises).done(callback, u.err(next));
-                return;
-            } else {
-                next();
-                return;
-            }
+            saveLaufendesSpiel();
         default:
             next();
             return;
