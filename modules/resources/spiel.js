@@ -68,7 +68,7 @@ exports.save = function(req, res, next){
             next();
             return;
         }
-    }
+    };
 
     switch (status) {
         case null:
