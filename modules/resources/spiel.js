@@ -79,6 +79,7 @@ exports.save = function(req, res, next){
             return;
         case s.SpielIljig.STATUS.angelegt:
             saveLaufendesSpiel();
+            return;
         default:
             next();
             return;
