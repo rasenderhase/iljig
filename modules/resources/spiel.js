@@ -57,7 +57,7 @@ exports.save = function(req, res, next){
             req.atts.spiel = spiel;
             res.status(201);
             dbService.saveSpiel(spiel).done(callback, u.err(next));
-            break;
+            return;
         case s.SpielIljig.STATUS.angelegt:
             if (adminGeheimnis === spiel.adminGeheimnis
                 && req.body.status === s.SpielIljig.STATUS.gestartet) {
@@ -70,12 +70,14 @@ exports.save = function(req, res, next){
                     promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
                 }
                 Promise.all(promises).done(callback, u.err(next));
+                return;
             } else {
                 next();
+                return;
             }
-            break;
         default:
             next();
+            return;
     }
 };
 
@@ -87,6 +89,7 @@ exports.view = function(req, res, next){
 
     if (spiel === null) {
         next("Spiel ist null");
+        return;
     }
 
     renderOptions.spiel = spiel;
