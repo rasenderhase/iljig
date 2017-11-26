@@ -52,6 +52,7 @@ exports.save = function(req, res, next){
     };
 
     saveLaufendesSpiel = function() {
+        var finalCallback;
         if (adminGeheimnis === spiel.adminGeheimnis
             && req.body.status === s.SpielIljig.STATUS.gestartet) {
             spiel.starten();
@@ -62,12 +63,13 @@ exports.save = function(req, res, next){
                 }
                 promises.push(dbService.saveSpielerKarten(spiel.spieler[i]));
             }
-            Promise.all(promises).done(callback, u.err(next));
-            return;
+            finalCallback = function () {
+                Promise.all(promises).done(callback, u.err(next));
+            }
         } else {
-            next();
-            return;
+            finalCallback = next;
         }
+        finalCallback();
     };
 
     switch (status) {
