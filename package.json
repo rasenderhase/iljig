@@ -22,7 +22,7 @@
     "grunt": "^1.0.1",
     "grunt-codacy": "^1.1.0",
     "grunt-contrib-jshint": "~1.1.0",
-    "grunt-contrib-nodeunit": "~1.0.0",
+    "grunt-contrib-nodeunit": "~2.0.0",
     "grunt-contrib-uglify": "~3.3.0",
     "grunt-mocha-istanbul": "^5.0.2",
     "grunt-mocha-test": "^0.13.3",
