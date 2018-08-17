@@ -12,7 +12,7 @@
     "express-handlebars": "^3.0.0",
     "i18next": "^11.0.0",
     "i18next-express-middleware": "^1.0.7",
-    "i18next-node-fs-backend": "^1.0.0",
+    "i18next-node-fs-backend": "^2.0.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "log4js": "^2.3.12",
     "promise": "^8.0.1",
