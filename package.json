@@ -11,7 +11,7 @@
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "i18next": "^11.0.0",
-    "i18next-express-middleware": "^1.0.7",
+    "i18next-express-middleware": "^1.4.0",
     "i18next-node-fs-backend": "^2.0.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "log4js": "^3.0.0",
@@ -19,7 +19,7 @@
     "serve-favicon": "^2.4.5"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.3",
     "grunt-codacy": "^1.1.0",
     "grunt-contrib-nodeunit": "~2.0.0",
     "grunt-contrib-jshint": "~2.0.0",
