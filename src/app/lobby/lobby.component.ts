@@ -1,44 +1,30 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LobbyService } from '../api/api/lobby.service';
-import { LobbyStatus } from '../api/model/lobbyStatus';
-import { Router } from '@angular/router';
+import { LobbyStore } from './lobby.signal-store';
 
 @Component({
   selector: 'app-lobby',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './lobby.component.html',
-  styleUrl: './lobby.component.css'
+  styleUrl: './lobby.component.css',
+  providers: [LobbyStore],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyComponent {
-  pin: string = '';
-  playerName: string = '';
-  currentLobby?: LobbyStatus;
+  readonly store = inject(LobbyStore);
 
-  constructor(private lobbyService: LobbyService, private router: Router) {}
+  pin = signal('');
+  playerName = signal('');
 
   hostGame() {
-    this.lobbyService.createLobby().subscribe(lobby => {
-      this.currentLobby = lobby;
-      this.pin = lobby.pin!;
-      // Automatically join as host after creating
-      this.joinGame();
-    });
+    if (!this.playerName()) return;
+    this.store.hostGame(this.playerName());
   }
 
   joinGame() {
-    if (!this.pin || !this.playerName) return;
-    
-    this.lobbyService.joinLobby({ pin: this.pin, playerName: this.playerName })
-      .subscribe({
-        next: (lobby) => {
-          this.currentLobby = lobby;
-          // Navigation logic to a "Waiting Room" could go here
-          console.log('Joined lobby:', lobby);
-        },
-        error: (err) => alert('Lobby not found or error joining.')
-      });
+    if (!this.pin() || !this.playerName()) return;
+    this.store.joinGame({ pin: this.pin(), playerName: this.playerName() });
   }
 }

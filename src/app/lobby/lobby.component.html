@@ -1,29 +1,33 @@
 <div class="lobby-container">
   <h1>ILJIG Lobby</h1>
 
-  <div *ngIf="!currentLobby" class="actions">
+  <div *ngIf="!store.currentLobby()" class="actions">
     <div class="join-section">
       <h3>Join a Game</h3>
-      <input [(ngModel)]="pin" placeholder="Enter PIN" maxlength="6">
-      <input [(ngModel)]="playerName" placeholder="Your Name">
-      <button (click)="joinGame()">Join</button>
+      <input [ngModel]="pin()" (ngModelChange)="pin.set($event)" placeholder="Enter PIN" maxlength="6">
+      <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
+      <button (click)="joinGame()" [disabled]="store.isLoading()">Join</button>
     </div>
 
     <hr>
 
     <div class="host-section">
       <h3>Host a New Game</h3>
-      <input [(ngModel)]="playerName" placeholder="Your Name">
-      <button (click) ="hostGame()">Host Game</button>
+      <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
+      <button (click)="hostGame()" [disabled]="store.isLoading()">Host Game</button>
+    </div>
+
+    <div *ngIf="store.error()" class="error">
+      {{ store.error() }}
     </div>
   </div>
 
-  <div *ngIf="currentLobby" class="lobby-status">
-    <h2>Lobby: {{ currentLobby.pin }}</h2>
-    <p>Status: {{ currentLobby.status }}</p>
+  <div *ngIf="store.currentLobby() as lobby" class="lobby-status">
+    <h2>Lobby: {{ lobby.pin }}</h2>
+    <p>Status: {{ lobby.status }}</p>
     <h3>Players:</h3>
     <ul>
-      <li *ngFor="let player of currentLobby.players">
+      <li *ngFor="let player of lobby.players">
         {{ player.name }} <span *ngIf="player.isHost">(Host)</span>
       </li>
     </ul>
