@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.6'
+    id 'org.openapi.generator' version '7.5.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -13,7 +14,35 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation libs.springBootStarterWeb
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.21'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 }
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/api-spec/openapi.yml".toString()
+    outputDir = "$buildDir/generated/openapi".toString()
+    apiPackage = "de.knees.iljig.api"
+    modelPackage = "de.knees.iljig.model"
+    configOptions = [
+        interfaceOnly: "true",
+        useSpringBoot3: "true",
+        useJakartaEe: "true",
+        skipDefaultInterface: "true",
+        useTags: "true"
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/openapi/src/main/java"
+        }
+    }
+}
+
+compileJava.dependsOn tasks.openApiGenerate
 
 testing {
     suites {

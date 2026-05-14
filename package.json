@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "jest"
+    "test": "jest",
+    "api:generate": "openapi-generator-cli generate -i api-spec/openapi.yml -g typescript-angular -o src/app/api"
   },
   "prettier": {
     "printWidth": 100,
@@ -36,6 +37,7 @@
     "@angular/build": "^21.1.1",
     "@angular/cli": "^21.1.1",
     "@angular/compiler-cli": "^21.1.0",
+    "@openapitools/openapi-generator-cli": "^2.32.0",
     "@types/jest": "^30.0.0",
     "jsdom": "^27.1.0",
     "typescript": "^5.9.3",

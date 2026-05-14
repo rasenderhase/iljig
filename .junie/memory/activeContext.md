@@ -1,4 +1,4 @@
-# Active Context: Serverless Card Game
+# Active Context: Card Game
 
 ## Current Goal
 Initialisierung der Projektstruktur und Erstellung der Architektur-Dokumentation (Memory Bank).

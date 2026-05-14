@@ -7,7 +7,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+ng run start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -53,6 +53,23 @@ ng e2e
 ```
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## API Generation
+
+This project uses OpenAPI for contract-first development. To regenerate the API interfaces and models from `api-spec/openapi.yml`, use the following commands:
+
+```bash
+./gradlew :app:clean :app:openApiGenerate
+npm run api:generate
+```
+
+### Java (Spring Boot)
+
+The generated code is located in `app/build/generated/openapi` and is automatically included in the compilation process.
+
+### TypeScript (Angular)
+
+The generated code is located in `src/app/api`.
 
 ## Additional Resources
 

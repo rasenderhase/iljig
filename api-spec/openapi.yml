@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: ILJIG API
+  description: API for ILJIG (I Love Just It Games)
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /api/lobby/create:
+    post:
+      tags:
+        - Lobby
+      summary: Initialize a game
+      operationId: createLobby
+      responses:
+        '201':
+          description: Lobby created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyStatus'
+  /api/lobby/join:
+    post:
+      tags:
+        - Lobby
+      summary: Join a game via PIN
+      operationId: joinLobby
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinLobbyRequest'
+      responses:
+        '200':
+          description: Joined successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyStatus'
+        '404':
+          description: Lobby not found
+  /api/lobby/{pin}:
+    get:
+      tags:
+        - Lobby
+      summary: Get lobby status
+      operationId: getLobbyStatus
+      parameters:
+        - name: pin
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current lobby status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyStatus'
+        '404':
+          description: Lobby not found
+
+components:
+  schemas:
+    LobbyStatus:
+      type: object
+      properties:
+        pin:
+          type: string
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        status:
+          type: string
+          enum: [WAITING, STARTING, IN_GAME]
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isHost:
+          type: boolean
+    JoinLobbyRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+        playerName:
+          type: string
+      required:
+        - pin
+        - playerName
