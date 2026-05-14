@@ -18,11 +18,6 @@
 - **Acceptance Criteria:**
     - When the host has created the game, he joins the game by navigating to URL `/game/{pin}`.
     - When a user joins the game, he navigates to `/game/{pin}`.
-    - The game state of all users (host, normal users) is updated regularly (polling), so that they can see the currently joined users.
-
-## 3. Real-time Interaction (Lobby Updates)
-- Use `withHooks` in `LobbyStore` to poll `getLobbyStatus` every 2 seconds if a PIN is available.
-- Display the list of joined players in the `LobbyComponent`.
 
 ## 4. UI/UX Enhancements
 - **QR Code Support:** Integrate a library (like `ngx-kjua`) to display a QR code containing the join URL on the host's screen.

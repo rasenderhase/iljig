@@ -3,8 +3,8 @@
 To implement the requested features, the following plan will be executed. It involves adding a new `GameComponent`, updating the routing, and implementing polling logic to keep the player list up-to-date.
 
 #### 1. API Extensions
-- **Update `api-spec/openapi.yml`**: Add a `POST /api/lobby/{pin}/start` endpoint to allow the host to start the game.
-- **Regenerate API Client**: Ensure `LobbyService` includes the new `startGame(pin)` method (run `npm run generate-api` or equivalent).
+- **Update `api-spec/openapi.yml`**: Add a `POST /api/game/{pin}/start` endpoint to allow the host to start the game.
+- **Regenerate API Client**: Ensure `GameService` includes the new `startGame(pin)` method (run `npm run generate-api` or equivalent).
 
 #### 2. Routing Configuration
 - **Update `src/app/app.routes.ts`**: Add a new route for the game page:
@@ -14,6 +14,7 @@ To implement the requested features, the following plan will be executed. It inv
 
 #### 3. Lobby Component Updates
 - **Forwarding**: Update `LobbyStore` (or `LobbyComponent`) to use the Angular `Router` to navigate to `/game/{pin}` after a successful `hostGame()` or `joinGame()` call.
+- update the join button logic: if more than 9 players in the game, throw an error.
 - **Cleanup**: Remove the `lobby-status` section from `LobbyComponent.html` as this logic will move to the new component.
 
 #### 4. New Game Feature
