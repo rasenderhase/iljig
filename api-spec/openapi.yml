@@ -4,7 +4,7 @@ info:
   description: API for ILJIG (I Love Just It Games)
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:4200
     description: Local development server
 paths:
   /api/lobby/create:
