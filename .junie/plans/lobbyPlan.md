@@ -13,11 +13,16 @@
 - **Lobby Component:** Create a new component `LobbyComponent`.
     - **Join Section:** An input field for the PIN and a "Join" button.
     - **Create Section:** A "Host Game" button for players who want to start a new session.
-- **Routing:** Configure `app.routes.ts` to set the `LobbyComponent` as the default route (`''`).
+- **Routing:** Configure `app.routes.ts` to set the `LobbyComponent` as the default route (`''`) and add `/game/:pin` route.
 - **Lobby Service:** Create an Angular service to communicate with the Spring Boot backend.
+- **Acceptance Criteria:**
+    - When the host has created the game, he joins the game by navigating to URL `/game/{pin}`.
+    - When a user joins the game, he navigates to `/game/{pin}`.
+    - The game state of all users (host, normal users) is updated regularly (polling), so that they can see the currently joined users.
 
-## 3. Real-time Interaction (Future Proofing)
-- Setup WebSocket or Server-Sent Events (SSE) connection once a player joins the lobby to show other players joining in real-time.
+## 3. Real-time Interaction (Lobby Updates)
+- Use `withHooks` in `LobbyStore` to poll `getLobbyStatus` every 2 seconds if a PIN is available.
+- Display the list of joined players in the `LobbyComponent`.
 
 ## 4. UI/UX Enhancements
 - **QR Code Support:** Integrate a library (like `ngx-kjua`) to display a QR code containing the join URL on the host's screen.
