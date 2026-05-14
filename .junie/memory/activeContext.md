@@ -13,5 +13,4 @@ Initialisierung der Projektstruktur und Erstellung der Architektur-Dokumentation
 
 ## Next Steps
 1. Initialisierung des Angular-Projekts im aktuellen Verzeichnis.
-2. Installation notwendiger AWS SDKs oder AWS Amplify CLI.
-3. Entwurf der Datenstruktur für ein einfaches Kartenspiel in DynamoDB.
+2. Entwurf der Datenstruktur für ein einfaches Kartenspiel in Java Entities.

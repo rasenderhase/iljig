@@ -1,7 +1,7 @@
 # Project Brief: Serverless Card Game
 
 ## Core Idea
-Ein serverloses Kartenspiel, das über eine Web-App (Angular) zugänglich ist. Spieler können über ihre eigenen Geräte (QR-Code/PIN) beitreten.
+Ein Kartenspiel, das über eine Web-App (Angular) zugänglich ist. Spieler können über ihre eigenen Geräte (QR-Code/PIN) beitreten.
 
 ## Goals
 - Multi-Device Support: Jeder Spieler nutzt sein eigenes Handy/Gerät.
@@ -11,8 +11,6 @@ Ein serverloses Kartenspiel, das über eine Web-App (Angular) zugänglich ist. S
 
 ## Tech Stack
 - **Frontend:** Angular
-- **Hosting:** AWS Amplify / S3 + CloudFront
-- **Real-time/API:** AWS AppSync (GraphQL Subscriptions)
-- **Database:** Amazon DynamoDB
-- **Business Logic:** AWS Lambda (TypeScript/Node.js)
-- **Authentication:** Amazon Cognito (optional für Profile)
+- **Database:** in Memory
+- **Business Logic:** Java 25, Spring Boot
+- **Authentication:** keine
