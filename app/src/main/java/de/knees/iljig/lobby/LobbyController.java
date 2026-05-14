@@ -1,19 +1,18 @@
-package de.knees.iljig.controller;
+package de.knees.iljig.lobby;
 
 import de.knees.iljig.api.LobbyApi;
 import de.knees.iljig.model.JoinLobbyRequest;
 import de.knees.iljig.model.LobbyStatus;
-import de.knees.iljig.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class LobbyController implements LobbyApi {
+class LobbyController implements LobbyApi {
 
     private final LobbyService lobbyService;
 
-    public LobbyController(LobbyService lobbyService) {
+    LobbyController(LobbyService lobbyService) {
         this.lobbyService = lobbyService;
     }
 

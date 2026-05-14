@@ -1,35 +1,28 @@
 <div class="lobby-container">
   <h1>ILJIG Lobby</h1>
 
-  <div *ngIf="!store.currentLobby()" class="actions">
-    <div class="join-section">
-      <h3>Join a Game</h3>
-      <input [ngModel]="pin()" (ngModelChange)="pin.set($event)" placeholder="Enter PIN" maxlength="6">
-      <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
-      <button (click)="joinGame()" [disabled]="store.isLoading()">Join</button>
+  @if (!store.currentLobby()) {
+    <div class="actions">
+      <div class="join-section">
+        <h3>Join a Game</h3>
+        <input [ngModel]="pin()" (ngModelChange)="pin.set($event)" placeholder="Enter PIN" maxlength="6">
+        <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
+        <button (click)="joinGame()" [disabled]="store.isLoading()">Join</button>
+      </div>
+
+      <hr>
+
+      <div class="host-section">
+        <h3>Host a New Game</h3>
+        <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
+        <button (click)="hostGame()" [disabled]="store.isLoading()">Host Game</button>
+      </div>
+
+      @if (store.error()) {
+        <div class="error">
+          {{ store.error() }}
+        </div>
+      }
     </div>
-
-    <hr>
-
-    <div class="host-section">
-      <h3>Host a New Game</h3>
-      <input [ngModel]="playerName()" (ngModelChange)="playerName.set($event)" placeholder="Your Name">
-      <button (click)="hostGame()" [disabled]="store.isLoading()">Host Game</button>
-    </div>
-
-    <div *ngIf="store.error()" class="error">
-      {{ store.error() }}
-    </div>
-  </div>
-
-  <div *ngIf="store.currentLobby() as lobby" class="lobby-status">
-    <h2>Lobby: {{ lobby.pin }}</h2>
-    <p>Status: {{ lobby.status }}</p>
-    <h3>Players:</h3>
-    <ul>
-      <li *ngFor="let player of lobby.players">
-        {{ player.name }} <span *ngIf="player.isHost">(Host)</span>
-      </li>
-    </ul>
-  </div>
+  }
 </div>

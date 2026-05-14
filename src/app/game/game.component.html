@@ -1,0 +1,56 @@
+<div class="game-container">
+@if (store.lobby(); as lobby) {
+    <h1>Game PIN: {{ lobby.pin }}</h1>
+    <div class="status-badge" [class]="lobby.status?.toLowerCase() || ''">
+      Status: {{ lobby.status }}
+    </div>
+
+    @if (lobby.players) {
+      <div class="player-list">
+        <h3>Players ({{ lobby.players.length }}/9)</h3>
+        <ul>
+          @for (player of lobby.players; track player.id) {
+            <li>
+              {{ player.name }} @if (player.isHost) {
+                <span class="host-tag">(Host)</span>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (isHost()) {
+      <div class="host-controls">
+        <button
+          (click)="startGame()"
+          [disabled]="!canStart() || store.isLoading()"
+          class="start-button">
+          Start Game
+        </button>
+        @if ((lobby.players?.length ?? 0) < 2) {
+          <p class="hint">
+            Need at least 2 players to start.
+          </p>
+        }
+      </div>
+    }
+
+    @if (store.error()) {
+      <div class="error">
+        {{ store.error() }}
+      </div>
+    }
+  } @else {
+    @if (store.isLoading()) {
+      <div class="loading">
+        Loading game status...
+      </div>
+    }
+    @if (store.error() && !store.lobby()) {
+      <div class="error">
+        {{ store.error() }}
+      </div>
+    }
+  }
+</div>

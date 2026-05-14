@@ -1,0 +1,70 @@
+.game-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.status-badge.waiting { background-color: #ffeeba; color: #856404; }
+.status-badge.starting { background-color: #b8daff; color: #004085; }
+.status-badge.in_game { background-color: #c3e6cb; color: #155724; }
+
+.player-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.player-list li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.host-tag {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.host-controls {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 2px solid #ddd;
+}
+
+.start-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.start-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #dc3545;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

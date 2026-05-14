@@ -1,4 +1,4 @@
-package de.knees.iljig.service;
+package de.knees.iljig.lobby;
 
 import de.knees.iljig.model.LobbyStatus;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ class LobbyServiceTest {
     void testCreateLobby() {
         LobbyService lobbyService = new LobbyService();
         LobbyStatus lobby = lobbyService.createLobby();
-        
+
         assertNotNull(lobby.getPin());
         assertEquals(4, lobby.getPin().length());
         assertEquals(LobbyStatus.StatusEnum.WAITING, lobby.getStatus());
@@ -21,9 +21,9 @@ class LobbyServiceTest {
     void testJoinLobby() {
         LobbyService lobbyService = new LobbyService();
         LobbyStatus created = lobbyService.createLobby();
-        
+
         var joinedLobbyOpt = lobbyService.joinLobby(created.getPin(), "Alice");
-        
+
         assertTrue(joinedLobbyOpt.isPresent());
         LobbyStatus joinedLobby = joinedLobbyOpt.get();
         assertEquals(1, joinedLobby.getPlayers().size());
