@@ -1,6 +1,6 @@
 package de.knees.iljig.lobby;
 
-import de.knees.iljig.model.LobbyStatus;
+import de.knees.iljig.model.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,23 +9,24 @@ class LobbyServiceTest {
     @Test
     void testCreateLobby() {
         LobbyService lobbyService = new LobbyService();
-        LobbyStatus lobby = lobbyService.createLobby();
+        LobbyCreatedResponse lobby = lobbyService.createLobby();
 
         assertNotNull(lobby.getPin());
         assertEquals(4, lobby.getPin().length());
-        assertEquals(LobbyStatus.StatusEnum.WAITING, lobby.getStatus());
-        assertTrue(lobby.getPlayers().isEmpty());
+        assertNotNull(lobby.getSecret());
     }
 
     @Test
     void testJoinLobby() {
         LobbyService lobbyService = new LobbyService();
-        LobbyStatus created = lobbyService.createLobby();
+        LobbyCreatedResponse created = lobbyService.createLobby();
 
-        var joinedLobbyOpt = lobbyService.joinLobby(created.getPin(), "Alice");
+        var responseOpt = lobbyService.joinLobby(created.getPin(), "Alice", null);
 
-        assertTrue(joinedLobbyOpt.isPresent());
-        LobbyStatus joinedLobby = joinedLobbyOpt.get();
+        assertTrue(responseOpt.isPresent());
+        JoinLobbyResponse response = responseOpt.get();
+        assertNotNull(response.getPlayerId());
+        LobbyStatus joinedLobby = response.getLobbyStatus();
         assertEquals(1, joinedLobby.getPlayers().size());
         assertEquals("Alice", joinedLobby.getPlayers().get(0).getName());
         assertTrue(joinedLobby.getPlayers().get(0).getIsHost());

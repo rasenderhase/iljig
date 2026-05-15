@@ -19,7 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LobbyStatus'
+                $ref: '#/components/schemas/LobbyCreatedResponse'
   /api/lobby/join:
     post:
       tags:
@@ -38,14 +38,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LobbyStatus'
+                $ref: '#/components/schemas/JoinLobbyResponse'
         '404':
           description: Lobby not found
   /api/lobby/{pin}:
     get:
       tags:
         - Lobby
-      summary: Get lobby status
+      summary: Get lobby status (spectator view)
       operationId: getLobbyStatus
       parameters:
         - name: pin
@@ -62,6 +62,32 @@ paths:
                 $ref: '#/components/schemas/LobbyStatus'
         '404':
           description: Lobby not found
+  /api/lobby/{pin}/player/{playerId}:
+    get:
+      tags:
+        - Lobby
+      summary: Get lobby status for a specific player
+      operationId: getPlayerLobbyStatus
+      parameters:
+        - name: pin
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current lobby status for player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyStatus'
+        '404':
+          description: Lobby or Player not found
   /api/game/{pin}/start:
     post:
       tags:
@@ -71,6 +97,11 @@ paths:
       parameters:
         - name: pin
           in: path
+          required: true
+          schema:
+            type: string
+        - name: secret
+          in: header
           required: true
           schema:
             type: string
@@ -84,6 +115,20 @@ paths:
 
 components:
   schemas:
+    LobbyCreatedResponse:
+      type: object
+      properties:
+        pin:
+          type: string
+        secret:
+          type: string
+    JoinLobbyResponse:
+      type: object
+      properties:
+        playerId:
+          type: string
+        lobbyStatus:
+          $ref: '#/components/schemas/LobbyStatus'
     LobbyStatus:
       type: object
       properties:
@@ -96,6 +141,9 @@ components:
         status:
           type: string
           enum: [WAITING, STARTING, IN_GAME]
+        isHost:
+          type: boolean
+          description: True if the requesting user is the host (only set when called via player endpoint with correct playerId/secret)
     Player:
       type: object
       properties:
@@ -112,6 +160,9 @@ components:
           type: string
         playerName:
           type: string
+        secret:
+          type: string
+          description: Secret provided if the creator is joining as host
       required:
         - pin
         - playerName

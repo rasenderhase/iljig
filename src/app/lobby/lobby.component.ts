@@ -8,7 +8,6 @@ import { LobbyStore } from './lobby.signal-store';
   imports: [FormsModule],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.css',
-  providers: [LobbyStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyComponent {

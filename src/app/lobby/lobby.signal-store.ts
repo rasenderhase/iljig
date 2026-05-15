@@ -7,12 +7,14 @@ import {Router} from '@angular/router';
 
 export interface LobbyState {
     currentLobby: LobbyStatus | undefined;
+    secret: string | null;
     isLoading: boolean;
     error: string | null;
 }
 
 const initialState: LobbyState = {
     currentLobby: undefined,
+    secret: null,
     isLoading: false,
     error: null,
 };
@@ -25,16 +27,18 @@ export const LobbyStore = signalStore(
                 tap(() => patchState(store, {isLoading: true, error: null})),
                 switchMap((playerName) =>
                     lobbyService.createLobby().pipe(
-                        switchMap((lobby) => {
-                            const pin = lobby.pin!;
-                            return lobbyService.joinLobby({pin, playerName}).pipe(
+                        switchMap((response) => {
+                            const pin = response.pin!;
+                            const secret = response.secret!;
+                            patchState(store, {secret});
+                            return lobbyService.joinLobby({pin, playerName, secret}).pipe(
                                 tap({
-                                    next: (joinedLobby) => {
+                                    next: (joinResponse) => {
                                         patchState(store, {
-                                            currentLobby: joinedLobby,
+                                            currentLobby: joinResponse.lobbyStatus,
                                             isLoading: false
                                         });
-                                        router.navigate(['/game', joinedLobby.pin!]);
+                                        router.navigate(['/game', joinResponse.lobbyStatus!.pin!, 'player', joinResponse.playerId!]);
                                     },
                                     error: (_err) => patchState(store, {
                                         error: 'Failed to join lobby after creation',
@@ -71,14 +75,17 @@ export const LobbyStore = signalStore(
                             }
                             return lobbyService.joinLobby(params).pipe(
                                 tap({
-                                    next: (joinedLobby) => {
-                                        patchState(store, {currentLobby: joinedLobby, isLoading: false});
-                                        router.navigate(['/game', joinedLobby.pin!]);
+                                    next: (joinResponse) => {
+                                        patchState(store, {currentLobby: joinResponse.lobbyStatus, isLoading: false});
+                                        router.navigate(['/game', joinResponse.lobbyStatus!.pin!, 'player', joinResponse.playerId!]);
                                     },
-                                    error: (_err) => patchState(store, {
+                                }),
+                                catchError((_err) => {
+                                    patchState(store, {
                                         error: 'Lobby not found or error joining.',
                                         isLoading: false
-                                    }),
+                                    });
+                                    return of(null);
                                 })
                             );
                         }),

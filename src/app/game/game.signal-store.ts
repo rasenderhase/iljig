@@ -1,8 +1,9 @@
 import {patchState, signalStore, withMethods, withState, WritableStateSource} from '@ngrx/signals';
 import {inject} from '@angular/core';
-import {GameService, LobbyService, LobbyStatus, Player} from '../api';
+import {GameService, LobbyService, LobbyStatus} from '../api';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {pipe, switchMap, tap, timer, map, catchError, of, repeat} from 'rxjs';
+import {pipe, switchMap, tap, timer, catchError, of} from 'rxjs';
+import {LobbyStore} from '../lobby/lobby.signal-store';
 
 export interface GameState {
     lobby: LobbyStatus | undefined;
@@ -20,35 +21,29 @@ const initialState: GameState = {
 
 export const GameStore = signalStore(
     withState(initialState),
-    withMethods((store: WritableStateSource<GameState>, lobbyService = inject(LobbyService), gameService = inject(GameService)) => ({
-        loadLobby: rxMethod<string>(
+    withMethods((store: WritableStateSource<GameState>, lobbyService = inject(LobbyService), gameService = inject(GameService), lobbyStore = inject(LobbyStore)) => ({
+        startPolling: rxMethod<{ pin: string; playerId?: string }>(
             pipe(
-                tap(() => patchState(store, {isLoading: true, error: null})),
-                switchMap((pin) =>
-                    lobbyService.getLobbyStatus(pin).pipe(
-                        tap({
-                            next: (lobby) => patchState(store, {lobby, isLoading: false}),
-                            error: (_err) => patchState(store, {error: 'Failed to load lobby', isLoading: false}),
-                        })
-                    )
-                )
-            )
-        ),
-        startPolling: rxMethod<string>(
-            pipe(
-                tap(() => patchState(store, {isPolling: true})),
-                switchMap((pin) =>
+                tap(() => patchState(store, {isPolling: true, isLoading: true})),
+                switchMap(({pin, playerId}) =>
                     timer(0, 3000).pipe(
-                        switchMap(() =>
-                            lobbyService.getLobbyStatus(pin).pipe(
-                                tap((lobby) => patchState(store, {lobby})),
-                                catchError(() => of(null))
-                            )
-                        ),
+                        switchMap(() => {
+                            const request = playerId
+                                ? lobbyService.getPlayerLobbyStatus(pin, playerId)
+                                : lobbyService.getLobbyStatus(pin);
+
+                            return request.pipe(
+                                tap((lobby) => patchState(store, {lobby, isLoading: false})),
+                                catchError((err) => {
+                                    patchState(store, {error: 'Failed to load lobby', isLoading: false});
+                                    return of(null);
+                                })
+                            );
+                        }),
                         // Stop polling if game status is no longer WAITING
                         tap((lobby) => {
                             if (lobby && lobby.status !== 'WAITING') {
-                                patchState(store, {isPolling: false});
+                                // Maybe we continue polling if IN_GAME later, but for now stick to WAITING
                             }
                         })
                     )
@@ -58,20 +53,24 @@ export const GameStore = signalStore(
         startGame: rxMethod<string>(
             pipe(
                 tap(() => patchState(store, {isLoading: true, error: null})),
-                switchMap((pin) =>
-                    gameService.startGame(pin).pipe(
+                switchMap((pin) => {
+                    const secret = lobbyStore.secret();
+                    if (!secret) {
+                        patchState(store, {error: 'No secret found. Are you the host?', isLoading: false});
+                        return of(null);
+                    }
+                    return gameService.startGame(pin, secret).pipe(
                         tap({
                             next: () => {
                                 patchState(store, {isLoading: false});
-                                // The poll will eventually pick up the status change
                             },
                             error: (err) => patchState(store, {
                                 error: err.status === 403 ? 'Only the host can start the game.' : 'Failed to start game.',
                                 isLoading: false
                             }),
                         })
-                    )
-                )
+                    );
+                })
             )
         ),
     }))

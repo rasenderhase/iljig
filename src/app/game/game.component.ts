@@ -14,18 +14,10 @@ export class GameComponent implements OnInit {
   readonly store = inject(GameStore);
 
   pin = input.required<string>();
+  playerId = input<string>();
 
   isHost = computed(() => {
-    const players = this.store.lobby()?.players ?? [];
-    // For now, let's assume the first player is the host if we don't have better identity tracking.
-    // The requirement says: "checking the isHost flag in the player list"
-    // In a real app, we'd compare the current user's ID with the players' IDs.
-    // For this implementation, we'll consider the user a host if they are the one who has isHost=true.
-    // Since we don't have local persistence of 'who am I', this is a bit tricky.
-    // However, if we assume the user just joined/hosted, they might have it in a shared state or local storage.
-    // The gamePlan mentioned: "persisting it during the join/host process".
-    // Let's check if there is any 'host' player in the list.
-    return players.some(p => p.isHost);
+    return this.store.lobby()?.isHost ?? false;
   });
 
   canStart = computed(() => {
@@ -34,8 +26,7 @@ export class GameComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.store.loadLobby(this.pin());
-    this.store.startPolling(this.pin());
+    this.store.startPolling({pin: this.pin(), playerId: this.playerId()});
   }
 
   startGame() {

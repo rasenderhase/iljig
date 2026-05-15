@@ -3,19 +3,26 @@
 To implement the requested features, the following plan will be executed. It involves adding a new `GameComponent`, updating the routing, and implementing polling logic to keep the player list up-to-date.
 
 #### 1. API Extensions
-- **Update `api-spec/openapi.yml`**: Add a `POST /api/game/{pin}/start` endpoint to allow the host to start the game.
-- **Regenerate API Client**: Ensure `GameService` includes the new `startGame(pin)` method (run `npm run generate-api` or equivalent).
+- **Update `api-spec/openapi.yml`**:
+    - `createLobby` returns `pin` and `secret`.
+    - `joinLobby` returns `playerId` and `lobbyStatus`.
+    - Added `/api/lobby/{pin}/player/{playerId}` for authenticated polling.
+    - Updated `startGame` to require `secret` in header.
+- **Regenerate API Client**: Ensure `LobbyService` and `GameService` reflect these changes.
 
 #### 2. Routing Configuration
-- **Update `src/app/app.routes.ts`**: Add a new route for the game page:
+- **Update `src/app/app.routes.ts`**:
   ```typescript
-  { path: 'game/:pin', component: GameComponent }
+  { path: '', component: LobbyComponent },
+  { path: 'game/:pin', component: GameComponent },
+  { path: 'game/:pin/player/:playerId', component: GameComponent }
   ```
 
-#### 3. Lobby Component Updates
-- **Forwarding**: Update `LobbyStore` (or `LobbyComponent`) to use the Angular `Router` to navigate to `/game/{pin}` after a successful `hostGame()` or `joinGame()` call.
-- update the join button logic: if more than 9 players in the game, throw an error.
-- **Cleanup**: Remove the `lobby-status` section from `LobbyComponent.html` as this logic will move to the new component.
+#### 3. Lobby Component & Store Updates
+- **`LobbyStore`**:
+    - `hostGame`: Store the `secret` from `createLobby`. Join the lobby with this `secret`. Navigate to `/game/{pin}/player/{playerId}`.
+    - `joinGame`: Join the lobby, get `playerId`. Navigate to `/game/{pin}/player/{playerId}`.
+- **Spectator Access**: Users navigating directly to `/game/{pin}` should be treated as spectators.
 
 #### 4. New Game Feature
 - **`GameComponent`**:
@@ -23,14 +30,18 @@ To implement the requested features, the following plan will be executed. It inv
   - Shows a list of all players currently in the lobby.
   - Includes a "Start Game" button visible only to the host.
 - **`GameStore` (Signal Store)**:
-  - **Polling Logic**: Use an RxJS `timer` to call `getLobbyStatus(pin)` every few seconds while the game status is `WAITING`.
-  - **Host Identification**: Track whether the current user is the host (e.g., by checking the `isHost` flag in the player list or persisting it during the join/host process).
-  - **Start Game Action**: Implement the `startGame` method that triggers the API call.
+  - **Polling Logic**:
+    - If `playerId` is present in URL: Call `getPlayerLobbyStatus(pin, playerId)` every few seconds.
+    - If `playerId` is NOT present: Call `getLobbyStatus(pin)` (spectator mode).
+  - **Host Identification**:
+    - Recognized if `lobbyStatus.isHost` is true (returned by `getPlayerLobbyStatus` or `joinLobby` when secret matches).
+  - **Start Game Action**: Implement `startGame` using the stored `secret`.
 
 #### 5. UI Logic
 - **"Start Game" Button**:
-  - **Visibility**: Only visible if the current player is the host.
+  - **Visibility**: Only visible if `isHost` is true.
   - **Enablement**: Only enabled if `players.length >= 2`.
+- **Spectator Mode**: Disable all interactions, only show player list and game status.
 
 #### 6. Verification
 - Confirm that both hosting and joining correctly redirect to the unique game URL.

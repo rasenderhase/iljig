@@ -1,6 +1,9 @@
 <div class="game-container">
 @if (store.lobby(); as lobby) {
     <h1>Game PIN: {{ lobby.pin }}</h1>
+    @if (!playerId()) {
+        <div class="spectator-badge">Spectator Mode</div>
+    }
     <div class="status-badge" [class]="lobby.status?.toLowerCase() || ''">
       Status: {{ lobby.status }}
     </div>
