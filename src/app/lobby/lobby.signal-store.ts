@@ -1,12 +1,12 @@
 import {patchState, signalStore, withMethods, withState, WritableStateSource} from '@ngrx/signals';
 import {inject} from '@angular/core';
-import {LobbyService, LobbyStatus} from '../api';
+import {GameService, GameStatus} from '../api';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, switchMap, tap, map, catchError, of} from 'rxjs';
 import {Router} from '@angular/router';
 
 export interface LobbyState {
-    currentLobby: LobbyStatus | undefined;
+    currentLobby: GameStatus | undefined;
     secret: string | null;
     isLoading: boolean;
     error: string | null;
@@ -21,27 +21,27 @@ const initialState: LobbyState = {
 
 export const LobbyStore = signalStore(
     withState(initialState),
-    withMethods((store: WritableStateSource<LobbyState>, lobbyService = inject(LobbyService), router = inject(Router)) => ({
+    withMethods((store: WritableStateSource<LobbyState>, gameService = inject(GameService), router = inject(Router)) => ({
         hostGame: rxMethod<string>(
             pipe(
                 tap(() => patchState(store, {isLoading: true, error: null})),
                 switchMap((playerName) =>
-                    lobbyService.createLobby().pipe(
+                    gameService.createGame().pipe(
                         switchMap((response) => {
                             const pin = response.pin!;
                             const secret = response.secret!;
                             patchState(store, {secret});
-                            return lobbyService.joinLobby({pin, playerName, secret}).pipe(
+                            return gameService.joinGame({pin, playerName, secret}).pipe(
                                 tap({
                                     next: (joinResponse) => {
                                         patchState(store, {
-                                            currentLobby: joinResponse.lobbyStatus,
+                                            currentLobby: joinResponse.gameStatus,
                                             isLoading: false
                                         });
-                                        router.navigate(['/game', joinResponse.lobbyStatus!.pin!, 'player', joinResponse.playerId!]);
+                                        router.navigate(['/game', joinResponse.gameStatus!.pin!, 'player', joinResponse.playerId!]);
                                     },
                                     error: (_err) => patchState(store, {
-                                        error: 'Failed to join lobby after creation',
+                                        error: 'Failed to join game after creation',
                                         isLoading: false
                                     }),
                                 })
@@ -50,7 +50,7 @@ export const LobbyStore = signalStore(
                         tap({
                             error: (_err) => {
                                 patchState(store, (state) => {
-                                    const error = state.error ? state.error : 'Failed to create lobby';
+                                    const error = state.error ? state.error : 'Failed to create game';
                                     return {
                                         ...state,
                                         error,
@@ -67,22 +67,22 @@ export const LobbyStore = signalStore(
             pipe(
                 tap(() => patchState(store, {isLoading: true, error: null})),
                 switchMap((params) =>
-                    lobbyService.getLobbyStatus(params.pin).pipe(
-                        switchMap((lobby) => {
-                            if (lobby.players && lobby.players.length >= 9) {
+                    gameService.getGameStatus(params.pin).pipe(
+                        switchMap((game) => {
+                            if (game.players && game.players.length >= 9) {
                                 patchState(store, {error: 'Game is full (max 9 players)', isLoading: false});
                                 return of(null);
                             }
-                            return lobbyService.joinLobby(params).pipe(
+                            return gameService.joinGame(params).pipe(
                                 tap({
                                     next: (joinResponse) => {
-                                        patchState(store, {currentLobby: joinResponse.lobbyStatus, isLoading: false});
-                                        router.navigate(['/game', joinResponse.lobbyStatus!.pin!, 'player', joinResponse.playerId!]);
+                                        patchState(store, {currentLobby: joinResponse.gameStatus, isLoading: false});
+                                        router.navigate(['/game', joinResponse.gameStatus!.pin!, 'player', joinResponse.playerId!]);
                                     },
                                 }),
                                 catchError((_err) => {
                                     patchState(store, {
-                                        error: 'Lobby not found or error joining.',
+                                        error: 'Game not found or error joining.',
                                         isLoading: false
                                     });
                                     return of(null);
@@ -90,7 +90,7 @@ export const LobbyStore = signalStore(
                             );
                         }),
                         catchError((_err) => {
-                            patchState(store, {error: 'Lobby not found', isLoading: false});
+                            patchState(store, {error: 'Game not found', isLoading: false});
                             return of(null);
                         })
                     )

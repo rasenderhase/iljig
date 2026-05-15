@@ -7,46 +7,46 @@ servers:
   - url: http://localhost:4200
     description: Local development server
 paths:
-  /api/lobby/create:
+  /api/game/create:
     post:
       tags:
-        - Lobby
+        - Game
       summary: Initialize a game
-      operationId: createLobby
+      operationId: createGame
       responses:
         '201':
-          description: Lobby created
+          description: Game created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LobbyCreatedResponse'
-  /api/lobby/join:
+                $ref: '#/components/schemas/GameCreatedResponse'
+  /api/game/join:
     post:
       tags:
-        - Lobby
+        - Game
       summary: Join a game via PIN
-      operationId: joinLobby
+      operationId: joinGame
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JoinLobbyRequest'
+              $ref: '#/components/schemas/JoinGameRequest'
       responses:
         '200':
           description: Joined successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JoinLobbyResponse'
+                $ref: '#/components/schemas/JoinGameResponse'
         '404':
-          description: Lobby not found
-  /api/lobby/{pin}:
+          description: Game not found
+  /api/game/{pin}:
     get:
       tags:
-        - Lobby
-      summary: Get lobby status (spectator view)
-      operationId: getLobbyStatus
+        - Game
+      summary: Get game status (spectator view)
+      operationId: getGameStatus
       parameters:
         - name: pin
           in: path
@@ -55,19 +55,19 @@ paths:
             type: string
       responses:
         '200':
-          description: Current lobby status
+          description: Current game status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LobbyStatus'
+                $ref: '#/components/schemas/GameStatus'
         '404':
-          description: Lobby not found
-  /api/lobby/{pin}/player/{playerId}:
+          description: Game not found
+  /api/game/{pin}/player/{playerId}:
     get:
       tags:
-        - Lobby
-      summary: Get lobby status for a specific player
-      operationId: getPlayerLobbyStatus
+        - Game
+      summary: Get game status for a specific player
+      operationId: getPlayerGameStatus
       parameters:
         - name: pin
           in: path
@@ -81,13 +81,13 @@ paths:
             type: string
       responses:
         '200':
-          description: Current lobby status for player
+          description: Current game status for player
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LobbyStatus'
+                $ref: '#/components/schemas/GameStatus'
         '404':
-          description: Lobby or Player not found
+          description: Game or Player not found
   /api/game/{pin}/start:
     post:
       tags:
@@ -115,21 +115,21 @@ paths:
 
 components:
   schemas:
-    LobbyCreatedResponse:
+    GameCreatedResponse:
       type: object
       properties:
         pin:
           type: string
         secret:
           type: string
-    JoinLobbyResponse:
+    JoinGameResponse:
       type: object
       properties:
         playerId:
           type: string
-        lobbyStatus:
-          $ref: '#/components/schemas/LobbyStatus'
-    LobbyStatus:
+        gameStatus:
+          $ref: '#/components/schemas/GameStatus'
+    GameStatus:
       type: object
       properties:
         pin:
@@ -153,7 +153,7 @@ components:
           type: string
         isHost:
           type: boolean
-    JoinLobbyRequest:
+    JoinGameRequest:
       type: object
       properties:
         pin:
