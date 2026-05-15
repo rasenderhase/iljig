@@ -11,6 +11,7 @@ public class GameService {
     private final Map<String, GameStatus> games = new ConcurrentHashMap<>();
     private final Map<String, String> gameSecrets = new ConcurrentHashMap<>();
     private final Map<String, Map<String, List<Card>>> playerHands = new ConcurrentHashMap<>();
+    private final Map<String, List<Card>> gameDecks = new ConcurrentHashMap<>();
     private final Random random = new Random();
 
     public GameCreatedResponse createGame() {
@@ -63,7 +64,15 @@ public class GameService {
     }
 
     public Optional<GameStatus> getGameStatus(String pin) {
-        return Optional.ofNullable(games.get(pin));
+        GameStatus game = games.get(pin);
+        if (game == null) return Optional.empty();
+
+        GameStatus status = copyBaseStatus(game);
+        status.setIsHost(false);
+        
+        enrichWithGameState(status, pin, null);
+        
+        return Optional.of(status);
     }
 
     public Optional<GameStatus> getPlayerGameStatus(String pin, String playerId) {
@@ -78,39 +87,56 @@ public class GameService {
         boolean isHost = game.getPlayers().stream()
                 .anyMatch(p -> p.getId().equals(playerId) && Boolean.TRUE.equals(p.getIsHost()));
 
+        GameStatus status = copyBaseStatus(game);
+        status.setIsHost(isHost);
+
+        enrichWithGameState(status, pin, playerId);
+
+        return Optional.of(status);
+    }
+
+    private GameStatus copyBaseStatus(GameStatus game) {
         GameStatus status = new GameStatus();
         status.setPin(game.getPin());
-        status.setPlayers(game.getPlayers());
+        status.setPlayers(new ArrayList<>(game.getPlayers()));
         status.setStatus(game.getStatus());
-        status.setIsHost(isHost);
+        status.setTrumpCard(game.getTrumpCard());
+        status.setTrumpSuit(game.getTrumpSuit());
+        return status;
+    }
+
+    private void enrichWithGameState(GameStatus status, String pin, String playerId) {
+        List<Card> deck = gameDecks.get(pin);
+        if (deck != null) {
+            status.setRemainingDeckCount(deck.size());
+        }
 
         Map<String, List<Card>> hands = playerHands.get(pin);
         if (hands != null) {
-            status.setCards(hands.get(playerId));
-            
+            if (playerId != null) {
+                status.setCards(hands.get(playerId));
+            }
+
             List<PlayerHandMetadata> playerHandsMetadata = new ArrayList<>();
             for (Map.Entry<String, List<Card>> entry : hands.entrySet()) {
                 String otherPlayerId = entry.getKey();
-                if (!otherPlayerId.equals(playerId)) {
+                if (playerId == null || !otherPlayerId.equals(playerId)) {
                     PlayerHandMetadata metadata = new PlayerHandMetadata();
                     metadata.setPlayerId(otherPlayerId);
-                    
-                    // Find player name
-                    String otherPlayerName = game.getPlayers().stream()
+
+                    String playerName = status.getPlayers().stream()
                             .filter(p -> p.getId().equals(otherPlayerId))
                             .map(Player::getName)
                             .findFirst()
                             .orElse("Unknown");
-                    
-                    metadata.setPlayerName(otherPlayerName);
+
+                    metadata.setPlayerName(playerName);
                     metadata.setCardCount(entry.getValue().size());
                     playerHandsMetadata.add(metadata);
                 }
             }
             status.setPlayerHands(playerHandsMetadata);
         }
-
-        return Optional.of(status);
     }
 
     public boolean startGame(String pin, String secret) {
@@ -160,6 +186,20 @@ public class GameService {
             hands.put(player.getId(), hand);
         }
         playerHands.put(game.getPin(), hands);
+
+        // Last card is the trump card
+        Card trumpCard = deck.get(deck.size() - 1);
+        game.setTrumpCard(trumpCard);
+        
+        if (trumpCard.getSuit() == Card.SuitEnum.JOKER) {
+            game.setTrumpSuit(GameStatus.TrumpSuitEnum.HEARTS);
+        } else {
+            game.setTrumpSuit(GameStatus.TrumpSuitEnum.valueOf(trumpCard.getSuit().name()));
+        }
+
+        // Remaining deck
+        List<Card> remainingDeck = new ArrayList<>(deck.subList(cardIdx, deck.size()));
+        gameDecks.put(game.getPin(), remainingDeck);
     }
 
     private List<Card> createDeck(int playerCount) {

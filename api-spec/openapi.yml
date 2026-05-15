@@ -154,6 +154,15 @@ components:
           items:
             $ref: '#/components/schemas/PlayerHandMetadata'
           description: Metadata about other players' hands
+        remainingDeckCount:
+          type: integer
+          description: Number of cards remaining in the deck
+        trumpCard:
+          $ref: '#/components/schemas/Card'
+        trumpSuit:
+          type: string
+          enum: [HEARTS, CLUBS, SPADES, DIAMONDS]
+          description: The effective trump suit for the game
     PlayerHandMetadata:
       type: object
       properties:

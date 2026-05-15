@@ -53,6 +53,17 @@ class GameServiceTest {
         assertEquals(1, aliceStatus.getPlayerHands().size());
         assertEquals(7, aliceStatus.getPlayerHands().get(0).getCardCount());
         assertEquals("Bob", aliceStatus.getPlayerHands().get(0).getPlayerName());
+        
+        // New fields
+        assertNotNull(aliceStatus.getTrumpCard());
+        assertNotNull(aliceStatus.getTrumpSuit());
+        assertTrue(aliceStatus.getRemainingDeckCount() > 0);
+        // Deck should be 40 (standard) + 2 (jokers) = 42
+        // Players take 2 * 7 = 14
+        // Remaining: 42 - 14 = 28 (including trump indicator which is the last card of the deck)
+        // Wait, distributeCards currently keeps the whole remaining deck in gameDecks.
+        // Let's check the count.
+        assertEquals(28, aliceStatus.getRemainingDeckCount());
 
         // Check cards for Bob
         var bobStatus = gameService.getPlayerGameStatus(pin, status.getPlayers().get(1).getId()).get();

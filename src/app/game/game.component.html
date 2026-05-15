@@ -39,23 +39,39 @@
             }
           </div>
         }
-    } @else if (lobby.status === 'STARTING') {
-        <div class="dealing-overlay">
-            <h2>Dealing cards...</h2>
-            <div class="spinner"></div>
-        </div>
-    } @else if (lobby.status === 'IN_GAME') {
-        <div class="game-play">
-            <div class="my-hand">
-                <h3>Your Hand</h3>
-                <div class="cards">
-                    @for (card of lobby.cards; track $index) {
-                        <div class="card" [class]="card.suit?.toLowerCase()">
-                            {{ card.rank }} {{ card.suit }}
-                        </div>
-                    }
-                </div>
+    } @else if (lobby.status === 'STARTING' || lobby.status === 'IN_GAME') {
+        <div class="game-info">
+            <div class="deck-info">
+                Cards in deck: {{ lobby.remainingDeckCount }}
             </div>
+            @if (lobby.trumpCard) {
+                <div class="trump-info">
+                    Trump Suit: <span class="trump-suit" [class]="lobby.trumpSuit?.toLowerCase()">{{ lobby.trumpSuit }}</span>
+                    (Indicator: {{ lobby.trumpCard.rank }} of {{ lobby.trumpCard.suit }})
+                </div>
+            }
+        </div>
+
+        @if (lobby.status === 'STARTING') {
+            <div class="dealing-overlay">
+                <h2>Dealing cards...</h2>
+                <div class="spinner"></div>
+            </div>
+        }
+
+        <div class="game-play">
+            @if (playerId()) {
+                <div class="my-hand">
+                    <h3>Your Hand</h3>
+                    <div class="cards">
+                        @for (card of lobby.cards; track $index) {
+                            <div class="card" [class]="card.suit?.toLowerCase()">
+                                {{ card.rank }} {{ card.suit }}
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
             <div class="other-players">
                 @for (other of lobby.playerHands; track other.playerId) {
                     <div class="player-hand">
