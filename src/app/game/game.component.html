@@ -8,35 +8,62 @@
       Status: {{ lobby.status }}
     </div>
 
-    @if (lobby.players) {
-      <div class="player-list">
-        <h3>Players ({{ lobby.players.length }}/9)</h3>
-        <ul>
-          @for (player of lobby.players; track player.id) {
-            <li>
-              {{ player.name }} @if (player.isHost) {
-                <span class="host-tag">(Host)</span>
+    @if (lobby.status === 'WAITING') {
+        @if (lobby.players) {
+          <div class="player-list">
+            <h3>Players ({{ lobby.players.length }}/9)</h3>
+            <ul>
+              @for (player of lobby.players; track player.id) {
+                <li>
+                  {{ player.name }} @if (player.isHost) {
+                    <span class="host-tag">(Host)</span>
+                  }
+                </li>
               }
-            </li>
-          }
-        </ul>
-      </div>
-    }
-
-    @if (isHost()) {
-      <div class="host-controls">
-        <button
-          (click)="startGame()"
-          [disabled]="!canStart() || store.isLoading()"
-          class="start-button">
-          Start Game
-        </button>
-        @if ((lobby.players?.length ?? 0) < 2) {
-          <p class="hint">
-            Need at least 2 players to start.
-          </p>
+            </ul>
+          </div>
         }
-      </div>
+
+        @if (isHost()) {
+          <div class="host-controls">
+            <button
+              (click)="startGame()"
+              [disabled]="!canStart() || store.isLoading()"
+              class="start-button">
+              Start Game
+            </button>
+            @if ((lobby.players?.length ?? 0) < 2) {
+              <p class="hint">
+                Need at least 2 players to start.
+              </p>
+            }
+          </div>
+        }
+    } @else if (lobby.status === 'STARTING') {
+        <div class="dealing-overlay">
+            <h2>Dealing cards...</h2>
+            <div class="spinner"></div>
+        </div>
+    } @else if (lobby.status === 'IN_GAME') {
+        <div class="game-play">
+            <div class="my-hand">
+                <h3>Your Hand</h3>
+                <div class="cards">
+                    @for (card of lobby.cards; track $index) {
+                        <div class="card" [class]="card.suit?.toLowerCase()">
+                            {{ card.rank }} {{ card.suit }}
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="other-players">
+                @for (other of lobby.playerHands; track other.playerId) {
+                    <div class="player-hand">
+                        {{ other.playerName }}: {{ other.cardCount }} cards
+                    </div>
+                }
+            </div>
+        </div>
     }
 
     @if (store.error()) {

@@ -42,8 +42,9 @@ export const GameStore = signalStore(
                         }),
                         // Stop polling if game status is no longer WAITING
                         tap((game) => {
-                            if (game && game.status !== 'WAITING') {
-                                // Maybe we continue polling if IN_GAME later, but for now stick to WAITING
+                            if (game && game.status === 'STARTING') {
+                                // Once we are in STARTING, we might want to poll faster or handle transitions
+                                // For now, keep polling
                             }
                         })
                     )

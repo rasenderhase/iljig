@@ -144,6 +144,34 @@ components:
         isHost:
           type: boolean
           description: True if the requesting user is the host (only set when called via player endpoint with correct playerId/secret)
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+          description: Current player's cards (only for player endpoint)
+        playerHands:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerHandMetadata'
+          description: Metadata about other players' hands
+    PlayerHandMetadata:
+      type: object
+      properties:
+        playerId:
+          type: string
+        playerName:
+          type: string
+        cardCount:
+          type: integer
+    Card:
+      type: object
+      properties:
+        suit:
+          type: string
+          enum: [HEARTS, CLUBS, SPADES, DIAMONDS, JOKER]
+        rank:
+          type: string
+          enum: ["7", "8", "9", "10", "J", "Q", "K", "3", "2", "A", "BLUE", "RED", "COLORED"]
     Player:
       type: object
       properties:
