@@ -1,5 +1,6 @@
 ### Plan: Lead Hand
 
+This plan depends on `.junie/plans/020 - startingGamePlan.md`.
 This plan defines the rules and implementation for the "Lead Hand" (the player who starts a round) in the game. It covers the initial leader, the constraints on played cards, and the required API and UI updates.
 
 #### 1. Dependencies
