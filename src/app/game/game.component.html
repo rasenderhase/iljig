@@ -52,6 +52,39 @@
             }
         </div>
 
+        <div class="turn-info" [class.is-my-turn]="isCurrentPlayer()">
+            @if (isCurrentPlayer()) {
+                @if (isLeading() && (!lobby.cardsOnTable || lobby.cardsOnTable.length === 0)) {
+                    <div class="lead-prompt">It is your turn to lead!</div>
+                    <div class="constraints">
+                        Must play an odd number of cards (1, 3, or 5).
+                        Composition: One single card and optional pairs.
+                    </div>
+                } @else {
+                    <div class="lead-prompt">Your turn to beat or take!</div>
+                }
+            } @else {
+                <div class="waiting-prompt">Waiting for {{ currentPlayerName() }}...</div>
+            }
+        </div>
+
+        @if (lobby.cardsOnTable && lobby.cardsOnTable.length > 0) {
+            <div class="table-area">
+                <h4>Table:</h4>
+                <div class="cards-on-table">
+                    @for (stack of lobby.cardsOnTable; track $index) {
+                        <div class="card-stack">
+                            @for (card of stack; track $index) {
+                                <div class="card mini" [class]="card.suit?.toLowerCase()" [style.z-index]="$index">
+                                    {{ card.rank }} {{ card.suit }}
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
         @if (lobby.status === 'STARTING') {
             <div class="dealing-overlay">
                 <h2>Dealing cards...</h2>
@@ -65,11 +98,26 @@
                     <h3>Your Hand</h3>
                     <div class="cards">
                         @for (card of lobby.cards; track $index) {
-                            <div class="card" [class]="card.suit?.toLowerCase()">
+                            <div class="card"
+                                 [class]="card.suit?.toLowerCase()"
+                                 [class.selected]="isCardSelected(card)"
+                                 (click)="toggleCard(card)">
                                 {{ card.rank }} {{ card.suit }}
                             </div>
                         }
                     </div>
+                    @if (isCurrentPlayer()) {
+                        <div class="play-actions">
+                            <button (click)="playCards()" [disabled]="!canPlay() || store.isLoading()">
+                                Play Selected Cards
+                            </button>
+                            @if (!isLeading() || (lobby.cardsOnTable && lobby.cardsOnTable.length > 0)) {
+                                <button (click)="takeCards()" [disabled]="store.isLoading()" class="secondary">
+                                    Take Cards
+                                </button>
+                            }
+                        </div>
+                    }
                 </div>
             }
             <div class="other-players">

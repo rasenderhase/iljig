@@ -33,68 +33,68 @@ It defines the rules and implementation for players responding to a "lead hand" 
         - If the next player in order WOULD be the one who led the current round (meaning everyone has had a chance to beat or take, or others skipped/took), the cards on the table are removed from the game ("taken away"), and the current player becomes the leader for the next round.
 
 #### 3. API Updates (`api-spec/openapi.yml`)
-- **`GameStatus`**:
-    - Add `cardsOnTable`: A list of lists of `Card` objects. Each sub-list represents a "stack" (bottom card and the card beating it).
-    - Add `currentPlayerId`: The ID of the player whose turn it is.
-    - Add `roundLeaderId`: The ID of the player who started the current round (to check if the round should end after beating).
-- **Update Endpoint**: `POST /api/game/{pin}/play`
-    - Add an optional boolean field `takeCards` to the request body.
-    - If `takeCards` is true, the `cards` list can be empty.
-- **Validation**:
-    - Player must be `currentPlayerId`.
-    - If beating:
-        - Number of cards played must match the number of "top" cards on the table.
-        - Each played card must validly beat one of the top cards (implementation should allow the player to specify which card beats which if ambiguous, but usually it's automated or simple).
-    - If taking:
-        - `takeCards` must be true.
+- [x] **`GameStatus`**:
+    - [x] Add `cardsOnTable`: A list of lists of `Card` objects. Each sub-list represents a "stack" (bottom card and the card beating it).
+    - [x] Add `currentPlayerId`: The ID of the player whose turn it is.
+    - [x] Add `roundLeaderId`: The ID of the player who started the current round (to check if the round should end after beating).
+- [x] **Update Endpoint**: `POST /api/game/{pin}/play`
+    - [x] Add an optional boolean field `takeCards` to the request body.
+    - [x] If `takeCards` is true, the `cards` list can be empty.
+- [x] **Validation**:
+    - [x] Player must be `currentPlayerId`.
+    - [x] If beating:
+        - [x] Number of cards played must match the number of "top" cards on the table.
+        - [x] Each played card must validly beat one of the top cards (implementation should allow the player to specify which card beats which if ambiguous, but usually it's automated or simple).
+    - [x] If taking:
+        - [x] `takeCards` must be true.
 
 #### 4. Backend Implementation (`GameService.java`)
-- **State Management**:
-    - Track `currentPlayerId`, `roundLeaderId`, and `cardsOnTable`.
-- **Beating Logic**:
-    - Implement `canBeat(Card attacker, Card defender, Suit trumpSuit)`.
-    - Rank comparison: A > 2 > 3 > K > Q > J > 10 > 9 > 8 > 7.
-    - Special case: Joker suit/rank.
-- **Round Logic**:
-    - `onTake(playerId)`:
-        - Add all cards from `cardsOnTable` to player's hand.
-        - Clear `cardsOnTable`.
-        - Fill the player's hand with cards from the deck up to `initialCardsPerPlayer` (If possible and if player has less than `initialCardsPerPlayer` cards in their hand).
-        - Remove the filled cards from the deck.
-        - Set `roundLeaderId` and `currentPlayerId` to the next player.
-    - `onBeat(playerId, List<Card> cards)`:
-        - Validate beating conditions.
-        - Add cards to `cardsOnTable` (stacked on top).
-        - Remove played cards from the player's hand.
-        - Fill the player's hand with cards from the deck up to `initialCardsPerPlayer` (If possible and if player has less than `initialCardsPerPlayer` cards in their hand).
-        - Remove the filled cards from the deck.
-        - Determine next player: `nextPlayer = getNext(playerId)`.
-        - If `nextPlayer == roundLeaderId`:
-            - Round over: Clear `cardsOnTable` (cards are "gone").
-            - Current player leads next round: `roundLeaderId = playerId`, `currentPlayerId = playerId`.
-        - Else:
-            - `currentPlayerId = nextPlayer`.
+- [x] **State Management**:
+    - [x] Track `currentPlayerId`, `roundLeaderId`, and `cardsOnTable`.
+- [x] **Beating Logic**:
+    - [x] Implement `canBeat(Card attacker, Card defender, Suit trumpSuit)`.
+    - [x] Rank comparison: A > 2 > 3 > K > Q > J > 10 > 9 > 8 > 7.
+    - [x] Special case: Joker suit/rank.
+- [x] **Round Logic**:
+    - [x] `onTake(playerId)`:
+        - [x] Add all cards from `cardsOnTable` to player's hand.
+        - [x] Clear `cardsOnTable`.
+        - [x] Fill the player's hand with cards from the deck up to `initialCardsPerPlayer` (If possible and if player has less than `initialCardsPerPlayer` cards in their hand).
+        - [x] Remove the filled cards from the deck.
+        - [x] Set `roundLeaderId` and `currentPlayerId` to the next player.
+    - [x] `onBeat(playerId, List<Card> cards)`:
+        - [x] Validate beating conditions.
+        - [x] Add cards to `cardsOnTable` (stacked on top).
+        - [x] Remove played cards from the player's hand.
+        - [x] Fill the player's hand with cards from the deck up to `initialCardsPerPlayer` (If possible and if player has less than `initialCardsPerPlayer` cards in their hand).
+        - [x] Remove the filled cards from the deck.
+        - [x] Determine next player: `nextPlayer = getNext(playerId)`.
+        - [x] If `nextPlayer == roundLeaderId`:
+            - [x] Round over: Clear `cardsOnTable` (cards are "gone").
+            - [x] Current player leads next round: `roundLeaderId = playerId`, `currentPlayerId = playerId`.
+        - [x] Else:
+            - [x] `currentPlayerId = nextPlayer`.
 
 #### 5. Frontend Implementation (`GameStore` & `GameComponent`)
-- **Interaction**:
-    - When it's the player's turn (and they are not the leader):
-        - Show "Take" button.
-        - Enable card selection to "Beat".
-        - Show "Beat" button when enough cards are selected and they validly beat the table.
-- **Visualizing the Table**:
-    - Display `cardsOnTable` clearly showing which card is beating which.
+- [x] **Interaction**:
+    - [x] When it's the player's turn (and they are not the leader):
+        - [x] Show "Take" button.
+        - [x] Enable card selection to "Beat".
+        - [x] Show "Beat" button when enough cards are selected and they validly beat the table.
+- [x] **Visualizing the Table**:
+    - [x] Display `cardsOnTable` clearly showing which card is beating which.
 
 #### 6. Verification
-- **Test Beating**:
-    - Beat with higher rank/same suit.
-    - Beat with Trump.
-    - Beat with Joker.
-    - Fail to beat with lower rank/different suit (non-trump).
-- **Test Taking**:
-    - Verify cards are added to hand.
-    - Verify hand is filled from deck (if applicable).
-    - Verify next player leads.
-- **Test Beating Hand Filling**:
-    - Verify hand is filled from deck after beating cards.
-- **Test Round End**:
-    - Verify that when the round returns to the leader, the table is cleared and the last beating player leads.
+- [x] **Test Beating**:
+    - [x] Beat with higher rank/same suit.
+    - [x] Beat with Trump.
+    - [x] Beat with Joker.
+    - [x] Fail to beat with lower rank/different suit (non-trump).
+- [x] **Test Taking**:
+    - [x] Verify cards are added to hand.
+    - [x] Verify hand is filled from deck (if applicable).
+    - [x] Verify next player leads.
+- [x] **Test Beating Hand Filling**:
+    - [x] Verify hand is filled from deck after beating cards.
+- [x] **Test Round End**:
+    - [x] Verify that when the round returns to the leader, the table is cleared and the last beating player leads.

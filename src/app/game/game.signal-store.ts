@@ -1,6 +1,6 @@
-import {patchState, signalStore, withMethods, withState, WritableStateSource} from '@ngrx/signals';
+import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
-import {GameService, GameStatus} from '../api';
+import {Card, GameService, GameStatus} from '../api';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {pipe, switchMap, tap, timer, catchError, of} from 'rxjs';
 import {LobbyStore} from '../lobby/lobby.signal-store';
@@ -10,6 +10,7 @@ export interface GameState {
     isLoading: boolean;
     error: string | null;
     isPolling: boolean;
+    selectedCards: Card[];
 }
 
 const initialState: GameState = {
@@ -17,14 +18,45 @@ const initialState: GameState = {
     isLoading: false,
     error: null,
     isPolling: false,
+    selectedCards: [],
 };
 
 export const GameStore = signalStore(
     withState(initialState),
-    withMethods((store: WritableStateSource<GameState>, gameService = inject(GameService), lobbyStore = inject(LobbyStore)) => ({
+    withMethods((store, gameService = inject(GameService), lobbyStore = inject(LobbyStore)) => ({
+        toggleCardSelection: (card: Card) => {
+            const current = store.selectedCards();
+            const index = current.findIndex(c => c.suit === card.suit && c.rank === card.rank);
+            if (index >= 0) {
+                patchState(store, {selectedCards: current.filter((_, i) => i !== index)});
+            } else {
+                patchState(store, {selectedCards: [...current, card]});
+            }
+        },
+        playCards: rxMethod<{ pin: string; playerId: string; takeCards?: boolean }>(
+            pipe(
+                tap(() => patchState(store, {isLoading: true, error: null})),
+                switchMap(({pin, playerId, takeCards}) => {
+                    const cards = takeCards ? [] : store.selectedCards();
+                    return gameService.playCards(pin, {playerId, cards, takeCards}).pipe(
+                        tap({
+                            next: () => {
+                                patchState(store, {isLoading: false, selectedCards: []});
+                            },
+                            error: (err) => patchState(store, {
+                                error: 'Failed to play cards. ' + (err.status === 400 ? 'Invalid combination.' : ''),
+                                isLoading: false
+                            }),
+                        })
+                    );
+                })
+            )
+        ),
         startPolling: rxMethod<{ pin: string; playerId?: string }>(
             pipe(
-                tap(() => patchState(store, {isPolling: true, isLoading: true})),
+                tap((params) => {
+                    patchState(store, {isPolling: true, isLoading: true});
+                }),
                 switchMap(({pin, playerId}) =>
                     timer(0, 3000).pipe(
                         switchMap(() => {
@@ -33,7 +65,9 @@ export const GameStore = signalStore(
                                 : gameService.getGameStatus(pin);
 
                             return request.pipe(
-                                tap((game) => patchState(store, {lobby: game, isLoading: false})),
+                                tap((game) => {
+                                    patchState(store, {lobby: game, isLoading: false});
+                                }),
                                 catchError((err) => {
                                     patchState(store, {error: 'Failed to load game', isLoading: false});
                                     return of(null);

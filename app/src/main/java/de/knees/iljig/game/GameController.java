@@ -49,4 +49,13 @@ class GameController implements GameApi {
             return ResponseEntity.status(403).build();
         }
     }
+
+    @Override
+    public ResponseEntity<Void> playCards(String pin, PlayCardsRequest playCardsRequest) {
+        if (gameService.playCards(pin, playCardsRequest)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(400).build();
+        }
+    }
 }

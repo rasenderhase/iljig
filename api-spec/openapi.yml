@@ -112,6 +112,33 @@ paths:
           description: Only host can start the game
         '404':
           description: Game not found
+  /api/game/{pin}/play:
+    post:
+      tags:
+        - Game
+      summary: Play cards
+      operationId: playCards
+      parameters:
+        - name: pin
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayCardsRequest'
+      responses:
+        '204':
+          description: Cards played successfully
+        '400':
+          description: Invalid card combination or count
+        '403':
+          description: Not the player's turn or not the leader
+        '404':
+          description: Game or player not found
 
 components:
   schemas:
@@ -163,6 +190,30 @@ components:
           type: string
           enum: [HEARTS, CLUBS, SPADES, DIAMONDS]
           description: The effective trump suit for the game
+        leadingPlayerId:
+          type: string
+          description: The ID of the player who is currently leading
+        initialCardsPerPlayer:
+          type: integer
+          description: The number of cards each player was initially dealt
+        cardsOnTable:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Card'
+          description: A list of stacks on the table (each stack is [bottom, top])
+        currentPlayerId:
+          type: string
+          description: The ID of the player whose turn it is
+        roundLeaderId:
+          type: string
+          description: The ID of the player who started the current round
+        playedCards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+          description: The cards played in the current turn (DEPRECATED - use cardsOnTable)
     PlayerHandMetadata:
       type: object
       properties:
@@ -203,3 +254,18 @@ components:
       required:
         - pin
         - playerName
+    PlayCardsRequest:
+      type: object
+      properties:
+        playerId:
+          type: string
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        takeCards:
+          type: boolean
+          description: If true, the player takes all cards from the table
+      required:
+        - playerId
+        - cards

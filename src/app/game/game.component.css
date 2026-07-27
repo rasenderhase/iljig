@@ -68,3 +68,7 @@
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
+
+.selected {
+    background-color: #007bff;
+}
