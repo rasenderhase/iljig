@@ -184,8 +184,9 @@ class GameServiceTest {
     }
 
     @Test
-    void testPlayCardsSubsequent() {
+    void testPlayCardsSubsequent() throws InterruptedException {
         GameService gameService = new GameService();
+        gameService.roundEndDelayMs = 10;
         GameCreatedResponse created = gameService.createGame();
         String pin = created.getPin();
         String hostSecret = created.getSecret();
@@ -233,6 +234,16 @@ class GameServiceTest {
         assertTrue(gameService.playCards(pin, bobRequest3));
 
         status = gameService.getGameStatus(pin).get();
+        assertEquals(GameStatus.StatusEnum.ROUND_END, status.getStatus());
+        assertNotNull(status.getLastRoundResult());
+        assertEquals(RoundResult.TypeEnum.BEAT, status.getLastRoundResult().getType());
+        assertEquals(bobId, status.getLastRoundResult().getPlayerId());
+        assertEquals("Bob", status.getLastRoundResult().getPlayerName());
+
+        Thread.sleep(100);
+
+        status = gameService.getGameStatus(pin).get();
+        assertEquals(GameStatus.StatusEnum.IN_GAME, status.getStatus());
         // Since it was a 2-player game, beating returns turn to leader and clears table
         assertEquals(0, status.getCardsOnTable().size());
         assertEquals(bobId, status.getLeadingPlayerId());
@@ -243,8 +254,9 @@ class GameServiceTest {
     }
 
     @Test
-    void testTakeCards() {
+    void testTakeCards() throws InterruptedException {
         GameService gameService = new GameService();
+        gameService.roundEndDelayMs = 10;
         GameCreatedResponse created = gameService.createGame();
         String pin = created.getPin();
         String hostSecret = created.getSecret();
@@ -268,6 +280,14 @@ class GameServiceTest {
         // Bob takes cards
         PlayCardsRequest takeRequest = new PlayCardsRequest().playerId(bobId).cards(java.util.List.of()).takeCards(true);
         assertTrue(gameService.playCards(pin, takeRequest));
+
+        var intermediateStatus = gameService.getGameStatus(pin).get();
+        assertEquals(GameStatus.StatusEnum.ROUND_END, intermediateStatus.getStatus());
+        assertNotNull(intermediateStatus.getLastRoundResult());
+        assertEquals(RoundResult.TypeEnum.TAKE, intermediateStatus.getLastRoundResult().getType());
+        assertEquals(bobId, intermediateStatus.getLastRoundResult().getPlayerId());
+
+        Thread.sleep(100);
 
         // Verify Bob has H7 in hand
         var bobStatus = gameService.getPlayerGameStatus(pin, bobId).get();

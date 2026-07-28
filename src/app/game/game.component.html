@@ -39,7 +39,7 @@
             }
           </div>
         }
-    } @else if (lobby.status === 'STARTING' || lobby.status === 'IN_GAME') {
+    } @else if (lobby.status === 'STARTING' || lobby.status === 'IN_GAME' || lobby.status === 'ROUND_END') {
         <div class="game-info">
             <div class="deck-info">
                 Cards in deck: {{ lobby.remainingDeckCount }}
@@ -89,6 +89,17 @@
             <div class="dealing-overlay">
                 <h2>Dealing cards...</h2>
                 <div class="spinner"></div>
+            </div>
+        }
+
+        @if (lobby.status === 'ROUND_END') {
+            <div class="round-end-overlay">
+                @if (lobby.lastRoundResult?.type === 'TAKE') {
+                    <h2>{{ lobby.lastRoundResult?.playerName }} took cards</h2>
+                } @else {
+                    <h2>Cards beaten!</h2>
+                }
+                <div class="pause-indicator">Continuing in a moment...</div>
             </div>
         }
 

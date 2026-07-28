@@ -41,9 +41,9 @@ export class GameComponent implements OnInit {
   });
 
   canPlay = computed(() => {
-    if (!this.isCurrentPlayer()) return false;
     const lobby = this.store.lobby();
-    if (!lobby) return false;
+    if (!lobby || lobby.status === 'ROUND_END') return false;
+    if (!this.isCurrentPlayer()) return false;
 
     if (this.isLeading() && (!lobby.cardsOnTable || lobby.cardsOnTable.length === 0)) {
       return this.isValidLead();

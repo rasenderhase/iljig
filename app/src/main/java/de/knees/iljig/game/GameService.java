@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class GameService {
@@ -12,7 +15,9 @@ public class GameService {
     private final Map<String, String> gameSecrets = new ConcurrentHashMap<>();
     private final Map<String, Map<String, List<Card>>> playerHands = new ConcurrentHashMap<>();
     private final Map<String, List<Card>> gameDecks = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final Random random = new Random();
+    protected long roundEndDelayMs = 3500;
 
     public GameCreatedResponse createGame() {
         String pin = String.format("%04d", random.nextInt(10000));
@@ -105,6 +110,7 @@ public class GameService {
         status.setLeadingPlayerId(game.getLeadingPlayerId());
         status.setCurrentPlayerId(game.getCurrentPlayerId());
         status.setRoundLeaderId(game.getRoundLeaderId());
+        status.setLastRoundResult(game.getLastRoundResult());
         status.setInitialCardsPerPlayer(game.getInitialCardsPerPlayer());
         status.setPlayedCards(game.getPlayedCards());
         status.setCardsOnTable(game.getCardsOnTable() != null ? new ArrayList<>(game.getCardsOnTable()) : null);
@@ -358,24 +364,37 @@ public class GameService {
     }
 
     private void handleTake(GameStatus game, String playerId, List<Card> hand) {
-        // Add all cards from table to hand
-        for (List<Card> stack : game.getCardsOnTable()) {
-            hand.addAll(stack);
-        }
-        game.getCardsOnTable().clear();
+        RoundResult result = new RoundResult();
+        result.setType(RoundResult.TypeEnum.TAKE);
+        result.setPlayerId(playerId);
+        result.setPlayerName(getPlayerName(game, playerId));
+        game.setLastRoundResult(result);
 
-        // Refill hand
-        refillHand(game, hand);
+        game.setStatus(GameStatus.StatusEnum.ROUND_END);
 
-        // Next player becomes leader
-        List<Player> players = game.getPlayers();
-        int idx = getPlayerIndex(game, playerId);
-        int nextIdx = (idx + 1) % players.size();
-        String nextPlayerId = players.get(nextIdx).getId();
+        scheduler.schedule(() -> {
+            synchronized (game) {
+                // Add all cards from table to hand
+                for (List<Card> stack : game.getCardsOnTable()) {
+                    hand.addAll(stack);
+                }
+                game.getCardsOnTable().clear();
 
-        game.setLeadingPlayerId(nextPlayerId);
-        game.setCurrentPlayerId(nextPlayerId);
-        game.setRoundLeaderId(nextPlayerId);
+                // Refill hand
+                refillHand(game, hand);
+
+                // Next player becomes leader
+                List<Player> players = game.getPlayers();
+                int idx = getPlayerIndex(game, playerId);
+                int nextIdx = (idx + 1) % players.size();
+                String nextPlayerId = players.get(nextIdx).getId();
+
+                game.setLeadingPlayerId(nextPlayerId);
+                game.setCurrentPlayerId(nextPlayerId);
+                game.setRoundLeaderId(nextPlayerId);
+                game.setStatus(GameStatus.StatusEnum.IN_GAME);
+            }
+        }, roundEndDelayMs, TimeUnit.MILLISECONDS);
     }
 
     private void refillHand(GameStatus game, List<Card> hand) {
@@ -395,13 +414,34 @@ public class GameService {
 
         if (nextPlayerId.equals(game.getRoundLeaderId())) {
             // Round over
-            game.getCardsOnTable().clear();
-            game.setLeadingPlayerId(playerId);
-            game.setCurrentPlayerId(playerId);
-            game.setRoundLeaderId(playerId);
+            RoundResult result = new RoundResult();
+            result.setType(RoundResult.TypeEnum.BEAT);
+            result.setPlayerId(playerId);
+            result.setPlayerName(getPlayerName(game, playerId));
+            game.setLastRoundResult(result);
+
+            game.setStatus(GameStatus.StatusEnum.ROUND_END);
+
+            scheduler.schedule(() -> {
+                synchronized (game) {
+                    game.getCardsOnTable().clear();
+                    game.setLeadingPlayerId(playerId);
+                    game.setCurrentPlayerId(playerId);
+                    game.setRoundLeaderId(playerId);
+                    game.setStatus(GameStatus.StatusEnum.IN_GAME);
+                }
+            }, roundEndDelayMs, TimeUnit.MILLISECONDS);
         } else {
             game.setCurrentPlayerId(nextPlayerId);
         }
+    }
+
+    private String getPlayerName(GameStatus game, String playerId) {
+        return game.getPlayers().stream()
+                .filter(p -> p.getId().equals(playerId))
+                .map(Player::getName)
+                .findFirst()
+                .orElse("Unknown");
     }
 
     private int getPlayerIndex(GameStatus game, String playerId) {

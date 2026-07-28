@@ -167,7 +167,7 @@ components:
             $ref: '#/components/schemas/Player'
         status:
           type: string
-          enum: [WAITING, STARTING, IN_GAME]
+          enum: [WAITING, STARTING, IN_GAME, ROUND_END]
         isHost:
           type: boolean
           description: True if the requesting user is the host (only set when called via player endpoint with correct playerId/secret)
@@ -209,6 +209,8 @@ components:
         roundLeaderId:
           type: string
           description: The ID of the player who started the current round
+        lastRoundResult:
+          $ref: '#/components/schemas/RoundResult'
         playedCards:
           type: array
           items:
@@ -269,3 +271,14 @@ components:
       required:
         - playerId
         - cards
+
+    RoundResult:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [BEAT, TAKE]
+        playerId:
+          type: string
+        playerName:
+          type: string

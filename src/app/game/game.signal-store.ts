@@ -58,7 +58,7 @@ export const GameStore = signalStore(
                     patchState(store, {isPolling: true, isLoading: true});
                 }),
                 switchMap(({pin, playerId}) =>
-                    timer(0, 3000).pipe(
+                    timer(0, 1000).pipe(
                         switchMap(() => {
                             const request = playerId
                                 ? gameService.getPlayerGameStatus(pin, playerId)

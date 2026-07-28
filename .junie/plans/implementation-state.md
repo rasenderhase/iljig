@@ -26,6 +26,11 @@
   - Added beating and taking actions to `playCards` endpoint. ✓
   - Implemented turn switching and round end logic. ✓
   - Updated frontend with "Take" button and stacks visualization on table. ✓
+- **Game Feature - Round Transitions (Plan enhance-round-transitions)**:
+  - Added `ROUND_END` state and `RoundResult` to API. ✓
+  - Implemented 3.5s pause with asynchronous backend transition. ✓
+  - Added round outcome overlay and messaging to frontend. ✓
+  - Increased polling frequency during game. ✓
 
 ### Remaining Tasks
 - **Verification**:
